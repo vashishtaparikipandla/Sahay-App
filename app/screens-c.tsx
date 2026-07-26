@@ -3,16 +3,17 @@ import React, { useState } from 'react';
 import {
   Link2, FileText, Edit3, GraduationCap, Briefcase, Award,
   Accessibility, Plus, Trash2, Check, ArrowRight, Upload,
-  IndianRupee, MapPin, Globe, Info, AlertTriangle, Sparkles
+  IndianRupee, MapPin, Globe, Info, AlertTriangle, Sparkles, MessageCircle
 } from 'lucide-react';
-import { useRouter } from './context';
-import { Btn, Stepper, InfoCard, Badge, ToggleRow } from './components';
+import { useRouter, useApp } from './context';
+import { Btn, Stepper, InfoCard, Badge, ToggleRow, ConversationalBubble } from './components';
 
 // =============================================
 //  C1 — PROFILE SETUP CHOICE
 // =============================================
 export function ProfileChoiceScreen() {
   const { navigate } = useRouter();
+  const { state, setState } = useApp();
 
   const options = [
     {
@@ -84,6 +85,21 @@ export function ProfileChoiceScreen() {
             </button>
           ))}
         </div>
+
+        {state.v2Enabled && (
+          <div style={{ marginTop: 24, padding: 16, background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <MessageCircle size={18} /> Prefer a conversation?
+            </h3>
+            <p className="text-body-s text-medium" style={{ marginBottom: 12 }}>
+              You can turn on chat mode to go through this setup like a conversation instead of forms.
+            </p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Btn size="sm" onClick={() => setState(s => ({ ...s, chatMode: true }))} style={{ flex: 1, background: state.chatMode ? 'var(--primary)' : 'white', color: state.chatMode ? 'white' : 'var(--primary)', border: '1px solid var(--primary)' }}>Chat Mode {state.chatMode ? 'ON' : 'OFF'}</Btn>
+              <Btn size="sm" variant="secondary" onClick={() => setState(s => ({ ...s, chatMode: false }))} style={{ flex: 1 }}>Use Form</Btn>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -524,13 +540,93 @@ const ACCOMMODATIONS = ['Sign language interpreter', 'Flexible hours', 'Remote w
 
 export function DisabilityScreen() {
   const { navigate, back } = useRouter();
+  const { state } = useApp();
   const [devices, setDevices] = useState<string[]>([]);
   const [accom, setAccom] = useState<string[]>(['Accessible workplace']);
+  
+  // Chat state
+  const [chatStep, setChatStep] = useState(0);
 
   const toggleSet = (set: string[], setFn: React.Dispatch<React.SetStateAction<string[]>>, val: string) => {
     setFn(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]);
   };
 
+  const handleDeviceSelect = (d: string) => {
+    if (d === 'None of these') {
+      setChatStep(1);
+      return;
+    }
+    toggleSet(devices, setDevices, d);
+    setTimeout(() => setChatStep(1), 600);
+  };
+  
+  const handleAccomSelect = (a: string) => {
+    if (a === 'Nothing else') {
+      setChatStep(2);
+      return;
+    }
+    toggleSet(accom, setAccom, a);
+    setTimeout(() => setChatStep(2), 600);
+  };
+
+  if (state.chatMode) {
+    return (
+      <div className="screen">
+        <header className="topbar">
+          <button className="topbar-back-btn" onClick={back} aria-label="Go back">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div style={{ width: 40 }} />
+        </header>
+        <div className="screen-content" style={{ paddingTop: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+            <Sparkles size={24} strokeWidth={2} color="var(--primary)" />
+            <h1 className="text-h2">Let's talk about support.</h1>
+          </div>
+          
+          <ConversationalBubble message={`I see from your UDID that you have a locomotor disability. To help employers prepare, do you use any of these assistive devices?`} />
+          
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24, marginLeft: 16 }}>
+             {DEVICES.slice(0, 3).map(d => (
+                <button key={d} onClick={() => handleDeviceSelect(d)} className={`chip ${devices.includes(d) ? 'active' : ''}`}>{d}</button>
+             ))}
+             <button onClick={() => handleDeviceSelect('None of these')} className="chip">None of these</button>
+          </div>
+          
+          {chatStep >= 1 && (
+            <>
+              {devices.length > 0 ? (
+                <ConversationalBubble isUser message={`I use: ${devices.join(', ')}`} />
+              ) : (
+                <ConversationalBubble isUser message={`None of those.`} />
+              )}
+              
+              <ConversationalBubble message={`Got it. What workplace accommodations do you need?`} />
+              
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24, marginLeft: 16 }}>
+                 {ACCOMMODATIONS.slice(0, 3).map(a => (
+                    <button key={a} onClick={() => handleAccomSelect(a)} className={`chip ${accom.includes(a) ? 'active' : ''}`}>{a}</button>
+                 ))}
+                 <button onClick={() => handleAccomSelect('Nothing else')} className="chip">Nothing else for now</button>
+              </div>
+            </>
+          )}
+
+          {chatStep >= 2 && (
+            <>
+              <ConversationalBubble isUser message={`I need: ${accom.join(', ')}`} />
+              <ConversationalBubble message={`All set! This is strictly confidential and only shared when you apply.`} />
+              <div style={{ marginTop: 24 }}>
+                <Btn onClick={() => navigate('C5E_PREFERENCES')}>Continue</Btn>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // STANDARD FORM VIEW
   return (
     <div className="screen">
       <header className="topbar">

@@ -668,3 +668,58 @@ export function StarRating({ rating, count }: { rating: number; count?: number }
     </div>
   );
 }
+
+// =============================================
+//  CONVERSATIONAL BUBBLE
+// =============================================
+export function ConversationalBubble({
+  isUser,
+  message,
+  options,
+  onOptionSelect,
+}: {
+  isUser?: boolean;
+  message: string;
+  options?: string[];
+  onOptionSelect?: (opt: string) => void;
+}) {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: isUser ? 'flex-end' : 'flex-start',
+      marginBottom: 16
+    }}>
+      <div style={{
+        background: isUser ? 'var(--primary)' : 'var(--surface)',
+        color: isUser ? 'white' : 'var(--text-main)',
+        padding: '12px 16px',
+        borderRadius: 16,
+        borderBottomRightRadius: isUser ? 4 : 16,
+        borderBottomLeftRadius: isUser ? 16 : 4,
+        maxWidth: '85%'
+      }}>
+        {message}
+      </div>
+      {options && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+          {options.map((opt, i) => (
+            <button
+              key={i}
+              onClick={() => onOptionSelect && onOptionSelect(opt)}
+              style={{
+                border: '1px solid var(--border)',
+                background: 'white',
+                padding: '8px 12px',
+                borderRadius: 20,
+                fontSize: 14
+              }}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

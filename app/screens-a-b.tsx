@@ -13,10 +13,7 @@ import { Btn, OTPInput, Stepper, InfoCard, AccordionItem } from './components';
 // =============================================
 export function SplashScreen() {
   const { navigate } = useRouter();
-  useEffect(() => {
-    const t = setTimeout(() => navigate('A2_LANGUAGE'), 2200);
-    return () => clearTimeout(t);
-  }, [navigate]);
+  const { setState } = useApp();
 
   return (
     <div
@@ -51,26 +48,26 @@ export function SplashScreen() {
         </svg>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{
-            fontSize: 40,
-            fontWeight: 700,
-            color: 'white',
-            letterSpacing: '-0.5px',
-            lineHeight: 1,
-          }}
-        >
-          Sahay
-        </h1>
-        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'var(--body)', marginTop: 6 }}>
-          सहाय
-        </p>
+        <h1 style={{ fontSize: 40, fontWeight: 700, color: 'white', letterSpacing: '-0.5px', lineHeight: 1 }}>Sahay</h1>
+        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'var(--body)', marginTop: 6 }}>सहाय</p>
       </div>
-      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--body-l)', textAlign: 'center', maxWidth: 240 }}>
+      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--body-l)', textAlign: 'center', maxWidth: 240, marginBottom: 24 }}>
         Your ability, your opportunity.
       </p>
-      <div style={{ position: 'absolute', bottom: 48 }}>
-        <div className="spinner spinner-white" aria-label="Loading…" />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%', padding: '0 24px' }}>
+        <button
+          onClick={() => { setState(s => ({ ...s, v2Enabled: false })); navigate('A2_LANGUAGE'); }}
+          style={{ background: 'white', color: '#1D4ED8', padding: '14px', borderRadius: '12px', fontWeight: 600 }}
+        >
+          Enter Sahay V1 (Standard)
+        </button>
+        <button
+          onClick={() => { setState(s => ({ ...s, v2Enabled: true })); navigate('A2_LANGUAGE'); }}
+          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.4)', color: 'white', padding: '14px', borderRadius: '12px', fontWeight: 600 }}
+        >
+          Enter Sahay V2 (Conversational)
+        </button>
       </div>
     </div>
   );

@@ -79,6 +79,21 @@ import {
   SuspendedScreen,
 } from './screens-h-j';
 
+// --- K-M Screens (V2) ---
+import {
+  SaathiEntryScreen,
+  SaathiConsentScreen,
+  SaathiTierScreen,
+  SaathiProfileScreen,
+  SaathiReviewScreen,
+  ModesScreen,
+  ReviewScreen,
+  PracticeSetupScreen,
+  PracticeSessionScreen,
+  PracticeFeedbackScreen,
+  TravelRequestScreen,
+} from './screens-k-m';
+
 // =============================================
 //  MAIN SCREEN ROUTER
 // =============================================
@@ -164,6 +179,23 @@ function AppRouter() {
     J2_SERVER_ERROR:   <ServerErrorScreen />,
     J3_UPDATE:         <UpdateScreen />,
     J4_SUSPENDED:      <SuspendedScreen />,
+
+    // K — Saathi Mode
+    K1_SAATHI_ENTRY:   <SaathiEntryScreen />,
+    K2_CONSENT:        <SaathiConsentScreen />,
+    K3_TIER:           <SaathiTierScreen />,
+    K4_PROFILE:        <SaathiProfileScreen />,
+    K7_REVIEW:         <SaathiReviewScreen />,
+
+    // L — Experience Modes
+    L1_MODES:          <ModesScreen />,
+
+    // M — Differentiators
+    M2A_REVIEW:            <ReviewScreen />,
+    M3A_PRACTICE_SETUP:    <PracticeSetupScreen />,
+    M3B_PRACTICE_SESSION:  <PracticeSessionScreen />,
+    M3C_PRACTICE_FEEDBACK: <PracticeFeedbackScreen />,
+    M4A_TRAVEL_REQ:        <TravelRequestScreen />,
   };
 
   return (

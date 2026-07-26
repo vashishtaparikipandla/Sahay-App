@@ -21,7 +21,10 @@ type Screen =
   | 'H1_NOTIFICATIONS'
   | 'I1_PROFILE' | 'I2_EDIT' | 'I3_SETTINGS' | 'I4_ACCESSIBILITY' 
   | 'I5_PRIVACY' | 'I6_HELP' | 'I7_LOGOUT'
-  | 'J1_NO_INTERNET' | 'J2_SERVER_ERROR' | 'J3_UPDATE' | 'J4_SUSPENDED';
+  | 'J1_NO_INTERNET' | 'J2_SERVER_ERROR' | 'J3_UPDATE' | 'J4_SUSPENDED'
+  | 'K1_SAATHI_ENTRY' | 'K2_CONSENT' | 'K3_TIER' | 'K4_PROFILE' | 'K7_REVIEW'
+  | 'L1_MODES'
+  | 'M2A_REVIEW' | 'M3A_PRACTICE_SETUP' | 'M3B_PRACTICE_SESSION' | 'M3C_PRACTICE_FEEDBACK' | 'M4A_TRAVEL_REQ';
 
 interface RouterContextType {
   screen: Screen;
@@ -70,6 +73,22 @@ interface AppState {
   hasProfile: boolean;
   notifications: number;
   bookmarkedJobs: string[];
+  v2Enabled: boolean;
+  chatMode: boolean;
+  saathi: {
+    enabled: boolean;
+    handlerName: string;
+    relation: string;
+    tier: 'view' | 'apply' | 'full';
+  };
+  experienceModes: {
+    voiceFirst: boolean;
+    signLanguage: boolean;
+    aac: boolean;
+    easyRead: boolean;
+    switchControl: boolean;
+    calmMode: boolean;
+  };
 }
 
 interface AppContextType {
@@ -86,6 +105,10 @@ const AppContext = createContext<AppContextType>({
     hasProfile: true,
     notifications: 3,
     bookmarkedJobs: [],
+    v2Enabled: false,
+    chatMode: false,
+    saathi: { enabled: false, handlerName: '', relation: '', tier: 'view' },
+    experienceModes: { voiceFirst: false, signLanguage: false, aac: false, easyRead: false, switchControl: false, calmMode: false },
   },
   setState: () => {},
 });
@@ -99,6 +122,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     hasProfile: true,
     notifications: 3,
     bookmarkedJobs: [],
+    v2Enabled: false,
+    chatMode: false,
+    saathi: { enabled: false, handlerName: '', relation: '', tier: 'view' },
+    experienceModes: { voiceFirst: false, signLanguage: false, aac: false, easyRead: false, switchControl: false, calmMode: false },
   });
 
   return (
