@@ -1,66 +1,187 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import React from 'react';
+import { RouterProvider, AppProvider, useRouter } from './context';
 
-export default function Home() {
+import {
+  SplashScreen,
+  LanguageScreen,
+  OnboardingScreen,
+  SignInScreen,
+  MobileScreen,
+  OTPScreen,
+  VerifyIntroScreen,
+  AadhaarScreen,
+  AadhaarOTPScreen,
+  UDIDScreen,
+  UDIDUploadScreen,
+  SelfieScreen,
+  VerifyStatusScreen,
+  VerifyHelpScreen,
+} from './screens-a-b';
+
+
+// --- C Screens ---
+import {
+  ProfileChoiceScreen,
+  LinkedInScreen,
+  ResumeUploadScreen,
+  ResumeReviewScreen,
+  EducationScreen,
+  ExperienceScreen,
+  SkillsScreen,
+  DisabilityScreen,
+  PreferencesScreen,
+  LanguagesScreen,
+  ProfileReviewScreen,
+  CelebrationScreen,
+} from './screens-c';
+
+// --- D-F Screens ---
+import {
+  HomeScreen,
+  JobListScreen,
+  JobDetailScreen,
+  ApplyConfirmScreen,
+  ApplicationSubmittedScreen,
+  ApplicationsScreen,
+  AppDetailScreen,
+  InterviewScheduleScreen,
+} from './screens-d-f';
+
+// --- G Screens ---
+import {
+  CareHomeScreen,
+  TherapyListScreen,
+  ProviderDetailScreen,
+  BookingConfirmScreen,
+  MyBookingsScreen,
+  CommunityScreen,
+  ThreadScreen,
+  MentorshipScreen,
+  BenefitsScreen,
+  SchemeDetailScreen,
+  DocVaultScreen,
+} from './screens-g';
+
+// --- H-J Screens ---
+import {
+  NotificationsScreen,
+  ProfileViewScreen,
+  EditProfileScreen,
+  SettingsScreen,
+  AccessibilityScreen,
+  PrivacyScreen,
+  HelpScreen,
+  LogoutScreen,
+  NoInternetScreen,
+  ServerErrorScreen,
+  UpdateScreen,
+  SuspendedScreen,
+} from './screens-h-j';
+
+// =============================================
+//  MAIN SCREEN ROUTER
+// =============================================
+function AppRouter() {
+  const { screen } = useRouter();
+
+  const screenMap: Record<typeof screen, React.ReactNode> = {
+    // A — Onboarding
+    A1_SPLASH:        <SplashScreen />,
+    A2_LANGUAGE:      <LanguageScreen />,
+    A3_ONBOARDING:    <OnboardingScreen />,
+    A4_SIGNIN:        <SignInScreen />,
+    A5_MOBILE:        <MobileScreen />,
+    A6_OTP:           <OTPScreen />,
+
+    // B — Verification
+    B1_VERIFY_INTRO:  <VerifyIntroScreen />,
+    B2_AADHAAR:       <AadhaarScreen />,
+    B3_AADHAAR_OTP:   <AadhaarOTPScreen />,
+    B4_UDID:          <UDIDScreen />,
+    B5_UDID_UPLOAD:   <UDIDUploadScreen />,
+    B6_SELFIE:        <SelfieScreen />,
+    B7_VERIFY_STATUS: <VerifyStatusScreen />,
+    B8_VERIFY_HELP:   <VerifyHelpScreen />,
+
+    // C — Profile
+    C1_PROFILE_CHOICE: <ProfileChoiceScreen />,
+    C2_LINKEDIN:       <LinkedInScreen />,
+    C3_RESUME:         <ResumeUploadScreen />,
+    C4_RESUME_REVIEW:  <ResumeReviewScreen />,
+    C5A_EDUCATION:     <EducationScreen />,
+    C5B_EXPERIENCE:    <ExperienceScreen />,
+    C5C_SKILLS:        <SkillsScreen />,
+    C5D_DISABILITY:    <DisabilityScreen />,
+    C5E_PREFERENCES:   <PreferencesScreen />,
+    C5F_LANGUAGES:     <LanguagesScreen />,
+    C6_PROFILE_REVIEW: <ProfileReviewScreen />,
+    C7_CELEBRATION:    <CelebrationScreen />,
+
+    // D — Home
+    D1_HOME:           <HomeScreen />,
+
+    // E — Jobs
+    E1_JOBS:           <JobListScreen />,
+    E2_FILTERS:        <JobListScreen />,
+    E3_JOB_DETAIL:     <JobDetailScreen />,
+    E4_APPLY_CONFIRM:  <ApplyConfirmScreen />,
+    E5_SUBMITTED:      <ApplicationSubmittedScreen />,
+
+    // F — Applications
+    F1_APPLICATIONS:   <ApplicationsScreen />,
+    F2_APP_DETAIL:     <AppDetailScreen />,
+    F3_INTERVIEW:      <InterviewScheduleScreen />,
+    F4_WITHDRAW:       <AppDetailScreen />,
+
+    // G — Care
+    G1_CARE:           <CareHomeScreen />,
+    G2_THERAPY_LIST:   <TherapyListScreen />,
+    G3_PROVIDER:       <ProviderDetailScreen />,
+    G4_BOOK_CONFIRM:   <BookingConfirmScreen />,
+    G5_MY_BOOKINGS:    <MyBookingsScreen />,
+    G6_COMMUNITY:      <CommunityScreen />,
+    G7_THREAD:         <ThreadScreen />,
+    G8_MENTORSHIP:     <MentorshipScreen />,
+    G9_BENEFITS:       <BenefitsScreen />,
+    G10_SCHEME_DETAIL: <SchemeDetailScreen />,
+    G11_DOC_VAULT:     <DocVaultScreen />,
+
+    // H — Notifications
+    H1_NOTIFICATIONS:  <NotificationsScreen />,
+
+    // I — Profile/Settings
+    I1_PROFILE:        <ProfileViewScreen />,
+    I2_EDIT:           <EditProfileScreen />,
+    I3_SETTINGS:       <SettingsScreen />,
+    I4_ACCESSIBILITY:  <AccessibilityScreen />,
+    I5_PRIVACY:        <PrivacyScreen />,
+    I6_HELP:           <HelpScreen />,
+    I7_LOGOUT:         <LogoutScreen />,
+
+    // J — Errors
+    J1_NO_INTERNET:    <NoInternetScreen />,
+    J2_SERVER_ERROR:   <ServerErrorScreen />,
+    J3_UPDATE:         <UpdateScreen />,
+    J4_SUSPENDED:      <SuspendedScreen />,
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="app-shell">
+      {screenMap[screen]}
     </div>
+  );
+}
+
+// =============================================
+//  ROOT
+// =============================================
+export default function SahayApp() {
+  return (
+    <AppProvider>
+      <RouterProvider>
+        <AppRouter />
+      </RouterProvider>
+    </AppProvider>
   );
 }
