@@ -5,7 +5,7 @@ import {
   Edit3, User, Settings, Accessibility, Lock, HelpCircle, LogOut,
   Phone, MessageCircle, Mail, Smartphone, Volume2, Moon, Type,
   Download, Trash2, AlertTriangle, Check, WifiOff, RefreshCw,
-  Store, Info, ArrowRight
+  Store, Info, ArrowRight, Globe
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
 import { BottomNav, TopBar, Btn, SettingRow, ToggleRow, AccordionItem, InfoCard, Badge } from './components';
@@ -292,16 +292,7 @@ export function SettingsScreen() {
   );
 }
 
-// Need to import Globe for the settings
-function Globe(props: any) {
-  return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <line x1="2" y1="12" x2="22" y2="12"/>
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-    </svg>
-  );
-}
+
 
 // =============================================
 //  I4 — ACCESSIBILITY SETTINGS

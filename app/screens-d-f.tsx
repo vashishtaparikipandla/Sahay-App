@@ -81,9 +81,9 @@ export function HomeScreen() {
         {/* Care shortcuts */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 28 }}>
           {[
-            { icon: <Calendar size={22} strokeWidth={2} />, label: 'Book a session', screen: 'G2_THERAPY_LIST' as const, color: '#E6F3F3' },
-            { icon: <Users size={22} strokeWidth={2} />, label: 'Community', screen: 'G6_COMMUNITY' as const, color: '#FEF3E2' },
-            { icon: <Landmark size={22} strokeWidth={2} />, label: 'My benefits', screen: 'G9_BENEFITS' as const, color: '#E6F6EE' },
+            { icon: <Calendar size={22} strokeWidth={2} />, label: 'Book a session', screen: 'G2_THERAPY_LIST' as const, color: 'var(--surface)' },
+            { icon: <Users size={22} strokeWidth={2} />, label: 'Community', screen: 'G6_COMMUNITY' as const, color: 'var(--surface)' },
+            { icon: <Landmark size={22} strokeWidth={2} />, label: 'My benefits', screen: 'G9_BENEFITS' as const, color: 'var(--surface)' },
           ].map((item, i) => (
             <button
               key={i}

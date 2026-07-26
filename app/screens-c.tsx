@@ -794,7 +794,7 @@ export function CelebrationScreen() {
   const { navigate } = useRouter();
 
   return (
-    <div className="screen" style={{ justifyContent: 'center', alignItems: 'center', padding: '0 var(--content-mx)', background: 'linear-gradient(160deg, #E6F3F3 0%, #FEF3E2 100%)' }}>
+    <div className="screen" style={{ justifyContent: 'center', alignItems: 'center', padding: '0 var(--content-mx)', background: 'linear-gradient(160deg, var(--surface) 0%, var(--surface) 100%)' }}>
       <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, position: 'relative' }}>
         {/* Floating confetti */}
         {['🎉', '⭐', '🎊', '✨', '🌟', '💚'].map((e, i) => (

@@ -577,13 +577,13 @@ body {
   white-space: nowrap;
 }
 
-.badge-verified  { background: var(--success-light); color: var(--success); }
-.badge-pending   { background: var(--warning-light); color: var(--warning); }
-.badge-action    { background: var(--error-light);   color: var(--error); }
-.badge-info      { background: var(--info-light);    color: var(--info); }
-.badge-primary   { background: var(--primary-light); color: var(--primary); }
-.badge-neutral   { background: var(--surface);       color: var(--text-medium); }
-.badge-accent    { background: var(--accent-light);  color: #7A5200; }
+.badge-verified  { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-pending   { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-action    { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-info      { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-primary   { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-neutral   { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
+.badge-accent    { background: var(--surface); color: var(--text-medium); border: 1px solid rgba(0,0,0,0.05); }
 
 /* Filter chips */
 .chip {

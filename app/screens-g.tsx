@@ -21,10 +21,10 @@ export function CareHomeScreen() {
   const { navigate } = useRouter();
 
   const tiles = [
-    { icon: <Calendar size={28} strokeWidth={2} />, label: 'Book a session', desc: 'Therapy, counseling & consultations', screen: 'G2_THERAPY_LIST' as const, color: '#E6F3F3' },
-    { icon: <Users size={28} strokeWidth={2} />, label: 'Community', desc: 'Connect with peers & mentors', screen: 'G6_COMMUNITY' as const, color: '#FEF3E2' },
-    { icon: <HandHeart size={28} strokeWidth={2} />, label: 'Mentorship', desc: 'Find a mentor or become one', screen: 'G8_MENTORSHIP' as const, color: '#F3E6F6' },
-    { icon: <Landmark size={28} strokeWidth={2} />, label: 'My benefits', desc: 'Schemes you\'re eligible for', screen: 'G9_BENEFITS' as const, color: '#E6F6EE' },
+    { icon: <Calendar size={28} strokeWidth={2} />, label: 'Book a session', desc: 'Therapy, counseling & consultations', screen: 'G2_THERAPY_LIST' as const, color: 'var(--surface)' },
+    { icon: <Users size={28} strokeWidth={2} />, label: 'Community', desc: 'Connect with peers & mentors', screen: 'G6_COMMUNITY' as const, color: 'var(--surface)' },
+    { icon: <HandHeart size={28} strokeWidth={2} />, label: 'Mentorship', desc: 'Find a mentor or become one', screen: 'G8_MENTORSHIP' as const, color: 'var(--surface)' },
+    { icon: <Landmark size={28} strokeWidth={2} />, label: 'My benefits', desc: 'Schemes you\'re eligible for', screen: 'G9_BENEFITS' as const, color: 'var(--surface)' },
   ];
 
   return (

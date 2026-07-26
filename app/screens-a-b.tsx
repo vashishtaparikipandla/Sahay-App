@@ -22,7 +22,7 @@ export function SplashScreen() {
     <div
       className="screen"
       style={{
-        background: 'linear-gradient(160deg, #0F6E6B 0%, #0A4F4D 50%, #083A38 100%)',
+        background: 'linear-gradient(160deg, #2563EB 0%, #1D4ED8 50%, #1E3A8A 100%)',
         alignItems: 'center',
         justifyContent: 'center',
         gap: 24,
@@ -149,13 +149,13 @@ const SLIDES = [
   {
     title: 'Jobs built around your ability',
     body: 'Discover verified employers who offer accessible workplaces, accommodation support, and flexible arrangements — tailored to how you work best.',
-    color: '#E6F3F3',
-    svgColor: '#0F6E6B',
+    color: 'var(--surface)',
+    svgColor: '#2563EB',
     svg: (
       <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 200, height: 160 }}>
-        <rect x="20" y="40" width="160" height="100" rx="12" fill="#0F6E6B" opacity="0.1"/>
-        <rect x="40" y="20" width="120" height="80" rx="10" fill="#0F6E6B" opacity="0.18"/>
-        <rect x="60" y="60" width="80" height="50" rx="8" fill="#0F6E6B" opacity="0.9"/>
+        <rect x="20" y="40" width="160" height="100" rx="12" fill="#2563EB" opacity="0.1"/>
+        <rect x="40" y="20" width="120" height="80" rx="10" fill="#2563EB" opacity="0.18"/>
+        <rect x="60" y="60" width="80" height="50" rx="8" fill="#2563EB" opacity="0.9"/>
         <circle cx="140" cy="50" r="20" fill="#F2A93B" opacity="0.9"/>
         <path d="M133 50l4 4 8-8" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
         <rect x="68" y="72" width="30" height="4" rx="2" fill="white" opacity="0.8"/>
@@ -169,14 +169,14 @@ const SLIDES = [
   {
     title: 'Verified, so employers trust you instantly',
     body: 'Your Aadhaar and UDID verification creates a trusted profile. No more explaining your disability repeatedly — your credentials speak for you.',
-    color: '#FEF3E2',
+    color: 'var(--surface)',
     svgColor: '#F2A93B',
     svg: (
       <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 200, height: 160 }}>
         <rect x="30" y="30" width="140" height="100" rx="16" fill="#F2A93B" opacity="0.15"/>
         <rect x="50" y="50" width="100" height="65" rx="10" fill="white" stroke="#F2A93B" strokeWidth="1.5"/>
-        <circle cx="100" cy="75" r="18" fill="#0F6E6B" opacity="0.12"/>
-        <circle cx="100" cy="75" r="12" fill="#0F6E6B"/>
+        <circle cx="100" cy="75" r="18" fill="#2563EB" opacity="0.12"/>
+        <circle cx="100" cy="75" r="12" fill="#2563EB"/>
         <path d="M95 75l3 3 6-6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
         <rect x="62" y="100" width="76" height="4" rx="2" fill="#E7EEED"/>
         <rect x="72" y="108" width="56" height="3" rx="1.5" fill="#E7EEED"/>
@@ -188,23 +188,23 @@ const SLIDES = [
   {
     title: 'Care and community, not just a job board',
     body: 'Book therapy sessions, connect with mentors who\'ve walked your path, track government benefits you\'re entitled to, and find your community.',
-    color: '#E6F6EE',
+    color: 'var(--surface)',
     svgColor: '#1E8E5A',
     svg: (
       <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 200, height: 160 }}>
         <circle cx="60" cy="70" r="28" fill="#1E8E5A" opacity="0.12"/>
-        <circle cx="140" cy="70" r="28" fill="#0F6E6B" opacity="0.12"/>
+        <circle cx="140" cy="70" r="28" fill="#2563EB" opacity="0.12"/>
         <circle cx="100" cy="55" r="28" fill="#F2A93B" opacity="0.12"/>
         <circle cx="60" cy="70" r="18" fill="#1E8E5A" opacity="0.8"/>
-        <circle cx="140" cy="70" r="18" fill="#0F6E6B" opacity="0.8"/>
+        <circle cx="140" cy="70" r="18" fill="#2563EB" opacity="0.8"/>
         <circle cx="100" cy="50" r="18" fill="#F2A93B" opacity="0.9"/>
         <path d="M97 50l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M57 70l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M137 70l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <rect x="30" y="110" width="140" height="28" rx="12" fill="#0F6E6B" opacity="0.1"/>
-        <rect x="50" y="118" width="40" height="4" rx="2" fill="#0F6E6B" opacity="0.4"/>
-        <rect x="110" y="118" width="40" height="4" rx="2" fill="#0F6E6B" opacity="0.4"/>
-        <rect x="75" y="126" width="50" height="4" rx="2" fill="#0F6E6B" opacity="0.4"/>
+        <rect x="30" y="110" width="140" height="28" rx="12" fill="#2563EB" opacity="0.1"/>
+        <rect x="50" y="118" width="40" height="4" rx="2" fill="#2563EB" opacity="0.4"/>
+        <rect x="110" y="118" width="40" height="4" rx="2" fill="#2563EB" opacity="0.4"/>
+        <rect x="75" y="126" width="50" height="4" rx="2" fill="#2563EB" opacity="0.4"/>
       </svg>
     ),
   },
@@ -623,9 +623,9 @@ export function VerifyIntroScreen() {
         {/* Illustration */}
         <div style={{ margin: '24px auto 32px', width: 160, height: 140, background: 'var(--primary-light)', borderRadius: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg viewBox="0 0 140 120" fill="none" style={{ width: 140, height: 120 }}>
-            <rect x="20" y="30" width="100" height="65" rx="12" fill="#0F6E6B" opacity="0.15"/>
-            <rect x="30" y="20" width="80" height="55" rx="10" fill="#0F6E6B" opacity="0.25"/>
-            <rect x="40" y="10" width="60" height="45" rx="8" fill="#0F6E6B" opacity="0.9"/>
+            <rect x="20" y="30" width="100" height="65" rx="12" fill="#2563EB" opacity="0.15"/>
+            <rect x="30" y="20" width="80" height="55" rx="10" fill="#2563EB" opacity="0.25"/>
+            <rect x="40" y="10" width="60" height="45" rx="8" fill="#2563EB" opacity="0.9"/>
             <rect x="48" y="20" width="44" height="5" rx="2.5" fill="white" opacity="0.9"/>
             <rect x="48" y="30" width="30" height="4" rx="2" fill="white" opacity="0.6"/>
             <rect x="48" y="38" width="36" height="4" rx="2" fill="white" opacity="0.6"/>
