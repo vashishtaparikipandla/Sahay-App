@@ -498,7 +498,6 @@ export function InfoCard({ icon, children, variant = 'info' }: InfoCardProps) {
       className="card-border"
       style={{
         background: colorMap[variant],
-        borderColor: textMap[variant],
         color: textMap[variant],
         display: 'flex',
         gap: 'var(--sp-3)',

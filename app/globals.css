@@ -6,30 +6,30 @@
 
 :root {
   /* === COLOR TOKENS === */
-  --primary: #0F6E6B;
-  --primary-dark: #0A4F4D;
-  --primary-light: #E6F3F3;
-  --primary-50: #f0fafa;
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --primary-light: #EFF6FF;
+  --primary-50: #DBEAFE;
 
-  --accent: #F2A93B;
-  --accent-light: #FEF3E2;
+  --accent: #F59E0B;
+  --accent-light: #FEF3C7;
 
-  --success: #1E8E5A;
-  --success-light: #E6F6EE;
-  --warning: #B8860B;
-  --warning-light: #FEF7E0;
-  --error: #C1421A;
-  --error-light: #FDEEE8;
-  --info: #1A6FC1;
-  --info-light: #E6F0FE;
+  --success: #16A34A;
+  --success-light: #DCFCE7;
+  --warning: #D97706;
+  --warning-light: #FEF3C7;
+  --error: #DC2626;
+  --error-light: #FEE2E2;
+  --info: #2563EB;
+  --info-light: #DBEAFE;
 
   /* Neutral scale */
-  --text-high: #0D1B1A;
-  --text-medium: #5B6B6A;
-  --text-disabled: #9AA6A5;
-  --surface: #E7EEED;
+  --text-high: #0F172A;
+  --text-medium: #475569;
+  --text-disabled: #94A3B8;
+  --surface: #F1F5F9;
   --base: #FFFFFF;
-  --bg: #F5F8F8;
+  --bg: #F8FAFC;
 
   /* === TYPOGRAPHY === */
   --font-primary: 'Atkinson Hyperlegible', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -89,22 +89,6 @@
   --dur-slow: 400ms;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text-high: #E8F0EF;
-    --text-medium: #9BB5B3;
-    --text-disabled: #4A5E5D;
-    --surface: #1E2D2C;
-    --base: #111C1B;
-    --bg: #0A1514;
-    --primary-light: #0F2F2E;
-    --success-light: #0E2A1C;
-    --warning-light: #2A1F02;
-    --error-light: #2A0F06;
-    --info-light: #0A1E33;
-  }
-}
 
 /* High contrast mode */
 [data-high-contrast="true"] {
@@ -470,7 +454,7 @@ body {
 
 .input-field:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(15, 110, 107, 0.12);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .input-field.has-error {

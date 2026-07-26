@@ -464,7 +464,7 @@ export function CommunityScreen() {
       <button
         onClick={() => navigate('G7_THREAD')}
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: 80,
           right: 20,
           width: 56,
@@ -476,7 +476,7 @@ export function CommunityScreen() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(15,110,107,0.4)',
+          boxShadow: '0 4px 20px rgba(37,99,235,0.4)',
           color: 'white',
           zIndex: 100,
         }}
@@ -552,7 +552,7 @@ export function ThreadScreen() {
       </div>
 
       {/* Reply input */}
-      <div style={{ position: 'fixed', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: 'var(--max-w)', padding: '12px 16px', background: 'var(--base)', borderTop: '1px solid var(--surface)', display: 'flex', gap: 8 }}>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '12px 16px', background: 'var(--base)', borderTop: '1px solid var(--surface)', display: 'flex', gap: 8 }}>
         <input
           className="input-field"
           style={{ flex: 1, minHeight: 44, padding: '10px 14px' }}
