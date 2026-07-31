@@ -2,18 +2,18 @@
 import React, { useState } from 'react';
 import {
   Link2, FileText, Edit3, GraduationCap, Briefcase, Award,
-  Accessibility, Plus, Trash2, Check, ArrowRight, Upload,
-  IndianRupee, MapPin, Globe, Info, AlertTriangle, Sparkles, MessageCircle
+  Accessibility, Plus, Trash2, Check, ArrowRight, Upload, FileCheck2,
+  IndianRupee, MapPin, Globe, Info, AlertTriangle, Sparkles,
+  Volume2, PenLine, HeartHandshake
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { Btn, Stepper, InfoCard, Badge, ToggleRow, ConversationalBubble } from './components';
+import { Btn, Stepper, InfoCard, Badge, ToggleRow, FillWithAIButton } from './components';
 
 // =============================================
 //  C1 — PROFILE SETUP CHOICE
 // =============================================
 export function ProfileChoiceScreen() {
   const { navigate } = useRouter();
-  const { state, setState } = useApp();
 
   const options = [
     {
@@ -63,8 +63,6 @@ export function ProfileChoiceScreen() {
                 transition: 'all 150ms',
               }}
               onClick={() => navigate(opt.screen)}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--primary)')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--surface)')}
             >
               <div style={{
                 width: 56, height: 56, borderRadius: 14,
@@ -85,21 +83,6 @@ export function ProfileChoiceScreen() {
             </button>
           ))}
         </div>
-
-        {state.v2Enabled && (
-          <div style={{ marginTop: 24, padding: 16, background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <MessageCircle size={18} /> Prefer a conversation?
-            </h3>
-            <p className="text-body-s text-medium" style={{ marginBottom: 12 }}>
-              You can turn on chat mode to go through this setup like a conversation instead of forms.
-            </p>
-            <div style={{ display: 'flex', gap: 12 }}>
-              <Btn size="sm" onClick={() => setState(s => ({ ...s, chatMode: true }))} style={{ flex: 1, background: state.chatMode ? 'var(--primary)' : 'white', color: state.chatMode ? 'white' : 'var(--primary)', border: '1px solid var(--primary)' }}>Chat Mode {state.chatMode ? 'ON' : 'OFF'}</Btn>
-              <Btn size="sm" variant="secondary" onClick={() => setState(s => ({ ...s, chatMode: false }))} style={{ flex: 1 }}>Use Form</Btn>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -318,6 +301,28 @@ export function EducationScreen() {
         </div>
         <p className="text-body text-medium" style={{ marginBottom: 24 }}>Add your educational background. All fields are optional.</p>
 
+        {/* School certificates */}
+        <div style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, marginBottom: 24 }}>
+          <h2 className="text-h3" style={{ marginBottom: 4 }}>School certificates</h2>
+          <p className="text-caption text-medium" style={{ marginBottom: 16 }}>Optional but helps your profile stand out.</p>
+          {[
+            { label: '10th (Secondary) Certificate', id: 'cert10' },
+            { label: '12th (Senior Secondary) Certificate', id: 'cert12' },
+          ].map(cert => (
+            <div key={cert.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--border, #E2E8F0)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <FileCheck2 size={18} color="var(--primary)" />
+                <span className="text-body" style={{ fontSize: 13 }}>{cert.label}</span>
+              </div>
+              <button
+                style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, background: 'none', border: '1px solid var(--primary)', padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}
+              >
+                Add later
+              </button>
+            </div>
+          ))}
+        </div>
+
         <ToggleRow
           id="no-formal"
           label="I don't have formal education"
@@ -442,12 +447,25 @@ export function ExperienceScreen() {
                 <label className="input-label">Brief description (optional)</label>
                 <textarea className="input-field" rows={3} placeholder="What did you work on?" style={{ resize: 'none' }} />
               </div>
+              <div className="input-group" style={{ marginTop: 4 }}>
+                <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <FileCheck2 size={13} strokeWidth={2} color="var(--text-medium)" />
+                  Proof of employment (optional)
+                </label>
+                <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', border: '1.5px dashed var(--primary)', borderRadius: 8, background: 'var(--primary-light)', color: 'var(--primary)', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: '100%' }}>
+                  <Upload size={14} />
+                  Add offer letter / payslip / experience letter
+                </button>
+              </div>
             </div>
           </div>
         )}
       </div>
       <div className="sticky-bottom-bar">
-        <Btn onClick={() => navigate('C5C_SKILLS')}>Continue</Btn>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Btn variant="secondary" icon={<Plus size={16} />} style={{ flex: 1 }} onClick={() => {}}>Add another</Btn>
+              <Btn style={{ flex: 1 }} onClick={() => navigate('C5C_SKILLS')}>Continue</Btn>
+            </div>
       </div>
     </div>
   );
@@ -540,102 +558,31 @@ const ACCOMMODATIONS = ['Sign language interpreter', 'Flexible hours', 'Remote w
 
 export function DisabilityScreen() {
   const { navigate, back } = useRouter();
-  const { state } = useApp();
   const [devices, setDevices] = useState<string[]>([]);
   const [accom, setAccom] = useState<string[]>(['Accessible workplace']);
-  
-  // Chat state
-  const [chatStep, setChatStep] = useState(0);
 
   const toggleSet = (set: string[], setFn: React.Dispatch<React.SetStateAction<string[]>>, val: string) => {
     setFn(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]);
   };
 
-  const handleDeviceSelect = (d: string) => {
-    if (d === 'None of these') {
-      setChatStep(1);
-      return;
-    }
-    toggleSet(devices, setDevices, d);
-    setTimeout(() => setChatStep(1), 600);
-  };
-  
-  const handleAccomSelect = (a: string) => {
-    if (a === 'Nothing else') {
-      setChatStep(2);
-      return;
-    }
-    toggleSet(accom, setAccom, a);
-    setTimeout(() => setChatStep(2), 600);
-  };
-
-  if (state.chatMode) {
-    return (
-      <div className="screen">
-        <header className="topbar">
-          <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <div style={{ width: 40 }} />
-        </header>
-        <div className="screen-content" style={{ paddingTop: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-            <Sparkles size={24} strokeWidth={2} color="var(--primary)" />
-            <h1 className="text-h2">Let's talk about support.</h1>
-          </div>
-          
-          <ConversationalBubble message={`I see from your UDID that you have a locomotor disability. To help employers prepare, do you use any of these assistive devices?`} />
-          
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24, marginLeft: 16 }}>
-             {DEVICES.slice(0, 3).map(d => (
-                <button key={d} onClick={() => handleDeviceSelect(d)} className={`chip ${devices.includes(d) ? 'active' : ''}`}>{d}</button>
-             ))}
-             <button onClick={() => handleDeviceSelect('None of these')} className="chip">None of these</button>
-          </div>
-          
-          {chatStep >= 1 && (
-            <>
-              {devices.length > 0 ? (
-                <ConversationalBubble isUser message={`I use: ${devices.join(', ')}`} />
-              ) : (
-                <ConversationalBubble isUser message={`None of those.`} />
-              )}
-              
-              <ConversationalBubble message={`Got it. What workplace accommodations do you need?`} />
-              
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24, marginLeft: 16 }}>
-                 {ACCOMMODATIONS.slice(0, 3).map(a => (
-                    <button key={a} onClick={() => handleAccomSelect(a)} className={`chip ${accom.includes(a) ? 'active' : ''}`}>{a}</button>
-                 ))}
-                 <button onClick={() => handleAccomSelect('Nothing else')} className="chip">Nothing else for now</button>
-              </div>
-            </>
-          )}
-
-          {chatStep >= 2 && (
-            <>
-              <ConversationalBubble isUser message={`I need: ${accom.join(', ')}`} />
-              <ConversationalBubble message={`All set! This is strictly confidential and only shared when you apply.`} />
-              <div style={{ marginTop: 24 }}>
-                <Btn onClick={() => navigate('C5E_PREFERENCES')}>Continue</Btn>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // STANDARD FORM VIEW
   return (
     <div className="screen">
       <header className="topbar">
         <button className="topbar-back-btn" onClick={back} aria-label="Go back">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <div style={{ width: 40 }} />
+        <div style={{ flex: 1 }} />
+        <FillWithAIButton
+          pageTitle="Disability & Accommodations"
+          fields={['Assistive devices', 'Workplace accommodations']}
+          onFill={(vals) => {
+            if (vals['Assistive devices']) setDevices([vals['Assistive devices']]);
+            if (vals['Workplace accommodations']) setAccom([vals['Workplace accommodations']]);
+          }}
+        />
+        <div style={{ width: 8 }} />
       </header>
-      <Stepper current={4} total={6} label="Step 4 of 6 — Disability & Accommodations" />
+      <Stepper current={4} total={7} label="Step 4 of 7 — Disability & Accommodations" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
@@ -651,7 +598,7 @@ export function DisabilityScreen() {
           <p className="text-overline text-medium" style={{ marginBottom: 8 }}>From your UDID</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             <span className="badge badge-primary">Locomotor disability</span>
-            <span className="badge badge-primary">60%</span>
+            <span className="badge badge-primary" style={{ background: 'var(--surface)', color: 'var(--text-medium)' }}>60% — From your UDID record</span>
           </div>
           <p className="text-caption text-medium" style={{ marginTop: 8 }}>
             Contact support to correct this information.
@@ -699,16 +646,23 @@ export function DisabilityScreen() {
 // =============================================
 //  C5e — WORK PREFERENCES
 // =============================================
+const INDIAN_CITIES = ['Ahmedabad', 'Bengaluru', 'Bhopal', 'Chennai', 'Coimbatore', 'Delhi', 'Gurgaon', 'Hyderabad', 'Indore', 'Jaipur', 'Kochi', 'Kolkata', 'Lucknow', 'Mumbai', 'Nagpur', 'Noida', 'Patna', 'Pune', 'Remote', 'Surat', 'Vadodara', 'Visakhapatnam'];
+
 export function PreferencesScreen() {
   const { navigate, back } = useRouter();
   const [jobTypes, setJobTypes] = useState<string[]>(['Full-time']);
   const [mode, setMode] = useState('Hybrid');
+  const [city1, setCity1] = useState('');
+  const [city2, setCity2] = useState('');
+  const [city3, setCity3] = useState('');
 
   const JOB_TYPES = ['Full-time', 'Part-time', 'Contract', 'Apprenticeship', 'Govt. reservation post'];
   const MODES = ['Remote', 'Hybrid', 'On-site'];
 
   const toggleType = (t: string) =>
     setJobTypes(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+
+  const cityOptions = (exclude: string[]) => INDIAN_CITIES.filter(c => !exclude.filter(Boolean).includes(c));
 
   return (
     <div className="screen">
@@ -718,7 +672,7 @@ export function PreferencesScreen() {
         </button>
         <div style={{ width: 40 }} />
       </header>
-      <Stepper current={5} total={6} label="Step 5 of 6 — Work preferences" />
+      <Stepper current={5} total={7} label="Step 5 of 7 — Work preferences" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
         <h1 className="text-h2" style={{ marginBottom: 8 }}>Work preferences</h1>
@@ -740,12 +694,30 @@ export function PreferencesScreen() {
           ))}
         </div>
 
-        <div className="input-group" style={{ marginBottom: 20 }}>
-          <label className="input-label">Preferred locations</label>
-          <input className="input-field" placeholder="e.g. Bengaluru, Remote, Mumbai" />
-        </div>
+        <h2 className="text-h3" style={{ marginBottom: 4 }}>Preferred cities</h2>
+        <p className="text-caption text-medium" style={{ marginBottom: 16 }}>Adding a couple more helps us find you more matches.</p>
+        {[
+          { label: '1st choice city', value: city1, set: setCity1, exclude: [city2, city3], required: true },
+          { label: '2nd choice city', value: city2, set: setCity2, exclude: [city1, city3], required: false },
+          { label: '3rd choice city', value: city3, set: setCity3, exclude: [city1, city2], required: false },
+        ].map((slot, i) => (
+          <div key={i} className="input-group" style={{ marginBottom: 12 }}>
+            <label className="input-label">
+              {slot.label} {slot.required && <span style={{ color: 'var(--error)' }}>*</span>}
+            </label>
+            <select
+              className="input-field"
+              value={slot.value}
+              onChange={e => slot.set(e.target.value)}
+              style={{ cursor: 'pointer' }}
+            >
+              <option value="">Select a city</option>
+              {cityOptions(slot.exclude).map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+        ))}
 
-        <div className="input-group" style={{ marginBottom: 20 }}>
+        <div className="input-group" style={{ marginBottom: 20, marginTop: 16 }}>
           <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <IndianRupee size={14} strokeWidth={2} /> Expected salary (LPA)
           </label>
@@ -780,9 +752,12 @@ const ALL_LANGS = ['English', 'Hindi', 'Tamil', 'Telugu', 'Bengali', 'Marathi', 
 
 export function LanguagesScreen() {
   const { navigate, back } = useRouter();
-  const [selected, setSelected] = useState<string[]>(['English', 'Hindi']);
+  const [speak, setSpeak] = useState<string[]>(['English', 'Hindi']);
+  const [write, setWrite] = useState<string[]>(['English']);
+  const [appLang, setAppLang] = useState('English');
 
-  const toggle = (l: string) => setSelected(prev => prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]);
+  const toggleSpeak = (l: string) => setSpeak(prev => prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]);
+  const toggleWrite = (l: string) => setWrite(prev => prev.includes(l) ? prev.filter(x => x !== l) : [...prev, l]);
 
   return (
     <div className="screen">
@@ -792,25 +767,143 @@ export function LanguagesScreen() {
         </button>
         <div style={{ width: 40 }} />
       </header>
-      <Stepper current={6} total={6} label="Step 6 of 6 — Languages" />
+      <Stepper current={6} total={7} label="Step 6 of 7 — Languages" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
           <Globe size={24} strokeWidth={2} color="var(--primary)" />
           <h1 className="text-h2">Languages</h1>
         </div>
-        <p className="text-body text-medium" style={{ marginBottom: 24 }}>Select languages you can speak or write for work.</p>
+        <p className="text-body text-medium" style={{ marginBottom: 28 }}>Help employers know how you communicate.</p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {ALL_LANGS.map(l => (
-            <button key={l} className={`chip ${selected.includes(l) ? 'active' : ''}`} onClick={() => toggle(l)} aria-pressed={selected.includes(l)}>
-              {selected.includes(l) && <Check size={12} strokeWidth={2.5} />} {l}
-            </button>
-          ))}
+        {/* Speak */}
+        <div style={{ marginBottom: 28 }}>
+          <h2 className="text-h3" style={{ marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Volume2 size={18} color="var(--primary)" /> Languages you can speak
+          </h2>
+          <p className="text-caption text-medium" style={{ marginBottom: 12 }}>For verbal interviews and calls</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {ALL_LANGS.map(l => (
+              <button key={l} className={`chip ${speak.includes(l) ? 'active' : ''}`} onClick={() => toggleSpeak(l)} aria-pressed={speak.includes(l)}>
+                {speak.includes(l) && <Check size={12} strokeWidth={2.5} />} {l}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Write */}
+        <div style={{ marginBottom: 28 }}>
+          <h2 className="text-h3" style={{ marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <PenLine size={18} color="var(--primary)" /> Languages you can write
+          </h2>
+          <p className="text-caption text-medium" style={{ marginBottom: 12 }}>For emails, reports, and written communication</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {ALL_LANGS.map(l => (
+              <button key={l} className={`chip ${write.includes(l) ? 'active' : ''}`} onClick={() => toggleWrite(l)} aria-pressed={write.includes(l)}>
+                {write.includes(l) && <Check size={12} strokeWidth={2.5} />} {l}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* App language preference */}
+        <div className="input-group" style={{ background: 'var(--surface)', padding: 14, borderRadius: 10 }}>
+          <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Globe size={14} color="var(--text-medium)" /> App language preference
+          </label>
+          <select className="input-field" value={appLang} onChange={e => setAppLang(e.target.value)} style={{ cursor: 'pointer', marginTop: 6 }}>
+            {ALL_LANGS.map(l => <option key={l}>{l}</option>)}
+          </select>
+          <p className="text-caption text-medium" style={{ marginTop: 6 }}>This changes the app's display language only.</p>
         </div>
       </div>
       <div className="sticky-bottom-bar">
-        <Btn onClick={() => navigate('C6_PROFILE_REVIEW')}>Continue</Btn>
+        <Btn onClick={() => navigate('C5G_GUARDIAN')}>Continue</Btn>
+      </div>
+    </div>
+  );
+}
+
+// =============================================
+//  C5g — GUARDIAN / SUPPORT CONTACT
+// =============================================
+export function GuardianScreen() {
+  const { navigate, back } = useRouter();
+  const { setState } = useApp();
+  const [name, setName] = useState('');
+  const [relation, setRelation] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+
+  const handleSave = () => {
+    if (name || phone) {
+      setState(s => ({ ...s, guardian: { name, relation, phone, email, address } }));
+    }
+    navigate('C6_PROFILE_REVIEW');
+  };
+
+  return (
+    <div className="screen">
+      <header className="topbar">
+        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div style={{ width: 40 }} />
+      </header>
+      <Stepper current={7} total={7} label="Step 7 of 7 — Support Contact" />
+
+      <div className="screen-content" style={{ paddingTop: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <HeartHandshake size={24} strokeWidth={2} color="var(--primary)" />
+          <h1 className="text-h2">Is there someone we should be able to reach if needed?</h1>
+        </div>
+        <p className="text-body text-medium" style={{ marginBottom: 8 }}>
+          This is just a contact for support — it doesn't give them access to your account.
+        </p>
+        <button
+          onClick={() => navigate('K1_SAATHI_ENTRY')}
+          style={{ fontSize: 12, color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 24, textDecoration: 'underline' }}
+        >
+          Looking to let someone manage your account? Set up Saathi Mode →
+        </button>
+
+        <div className="input-group">
+          <label className="input-label">Contact name</label>
+          <input className="input-field" placeholder="e.g. Ramesh Sharma" value={name} onChange={e => setName(e.target.value)} />
+        </div>
+
+        <div className="input-group">
+          <label className="input-label">Relationship</label>
+          <select className="input-field" value={relation} onChange={e => setRelation(e.target.value)} style={{ cursor: 'pointer' }}>
+            <option value="">Select relationship</option>
+            <option>Parent</option>
+            <option>Sibling</option>
+            <option>Spouse</option>
+            <option>Caregiver</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div className="input-group">
+          <label className="input-label">Phone number</label>
+          <input className="input-field" placeholder="e.g. 9876543210" type="tel" value={phone} onChange={e => setPhone(e.target.value)} />
+        </div>
+
+        <div className="input-group">
+          <label className="input-label">Email (optional)</label>
+          <input className="input-field" placeholder="e.g. ramesh@email.com" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </div>
+
+        <div className="input-group">
+          <label className="input-label">Address (optional)</label>
+          <input className="input-field" placeholder="City, State" value={address} onChange={e => setAddress(e.target.value)} />
+        </div>
+      </div>
+
+      <div className="sticky-bottom-bar">
+        <Btn onClick={handleSave}>Save & continue</Btn>
+        <Btn variant="ghost" onClick={() => navigate('C6_PROFILE_REVIEW')} style={{ marginTop: 8 }}>Skip for now</Btn>
       </div>
     </div>
   );
@@ -829,6 +922,7 @@ export function ProfileReviewScreen() {
     { title: 'Disability & accommodations', items: ['Locomotor (60%)', 'Wheelchair user', 'Accessible workplace needed'], complete: true },
     { title: 'Work preferences', items: ['Full-time', 'Hybrid', 'Bengaluru / Remote', '4–7 LPA'], complete: true },
     { title: 'Languages', items: ['English', 'Hindi', 'Telugu'], complete: true },
+    { title: 'Support contact', items: ['Ramesh Sharma (Parent) — 9876543210'], complete: true },
   ];
 
   return (
@@ -893,9 +987,9 @@ export function CelebrationScreen() {
     <div className="screen" style={{ justifyContent: 'center', alignItems: 'center', padding: '0 var(--content-mx)', background: 'linear-gradient(160deg, var(--surface) 0%, var(--surface) 100%)' }}>
       <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, position: 'relative' }}>
         {/* Floating confetti */}
-        {['🎉', '⭐', '🎊', '✨', '🌟', '💚'].map((e, i) => (
+        {['🎉', '⭐', '🎊', '✨', '🌟', '💙'].map((e, i) => (
           <span key={i} style={{
-            position: 'fixed',
+            position: 'absolute',
             fontSize: 24,
             animation: `confetti-fall ${2 + i * 0.4}s ease-out ${i * 0.3}s both`,
             left: `${[10, 25, 50, 70, 85, 40][i]}%`,
@@ -917,12 +1011,9 @@ export function CelebrationScreen() {
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
-          <Btn onClick={() => navigate('D1_HOME')} icon={<ArrowRight size={18} strokeWidth={2} />}>
+        <div style={{ width: '100%' }}>
+          <Btn onClick={() => navigate('E1_JOBS')} icon={<ArrowRight size={18} strokeWidth={2} />}>
             Explore jobs
-          </Btn>
-          <Btn variant="secondary" onClick={() => navigate('G1_CARE')}>
-            Explore care & benefits
           </Btn>
         </div>
       </div>

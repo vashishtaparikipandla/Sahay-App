@@ -1,9 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from './context';
 import {
-  Home, Briefcase, ListChecks, HeartHandshake, User,
-  ChevronLeft, Bell, Search, MoreVertical
+  Home, Briefcase, ListChecks, User,
+  ChevronLeft, Bell, Search, MoreVertical,
+  Bot, Sparkles, Send, Mic, Paperclip, X
 } from 'lucide-react';
 
 // =============================================
@@ -17,6 +18,17 @@ interface TopBarProps {
   transparent?: boolean;
 }
 
+// Sahay logo mark — small inline SVG
+function SahayMark() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 48 48" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <rect width="48" height="48" rx="12" fill="#2563EB" />
+      <path d="M18 24l4 4 8-8" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M24 14v3M24 31v3M14 24h3M31 24h3" stroke="rgba(255,255,255,0.6)" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 export function TopBar({ title, showBack = true, centerTitle, rightAction, transparent }: TopBarProps) {
   const { back } = useRouter();
   return (
@@ -24,12 +36,13 @@ export function TopBar({ title, showBack = true, centerTitle, rightAction, trans
       className="topbar"
       style={transparent ? { background: 'transparent', borderBottom: 'none' } : undefined}
     >
+      <SahayMark />
       {showBack ? (
         <button className="topbar-back-btn" onClick={back} aria-label="Go back">
           <ChevronLeft size={24} strokeWidth={2} />
         </button>
       ) : (
-        <div style={{ width: 40 }} />
+        <div style={{ width: 8 }} />
       )}
       {title && (
         <h1
@@ -46,7 +59,7 @@ export function TopBar({ title, showBack = true, centerTitle, rightAction, trans
 // =============================================
 //  BOTTOM NAVIGATION
 // =============================================
-type NavTab = 'home' | 'jobs' | 'applications' | 'care' | 'profile';
+type NavTab = 'home' | 'jobs' | 'applications' | 'disha' | 'profile';
 
 interface BottomNavProps {
   active: NavTab;
@@ -56,11 +69,11 @@ export function BottomNav({ active }: BottomNavProps) {
   const { navigate } = useRouter();
 
   const tabs: { id: NavTab; label: string; icon: React.ReactNode; screen: Parameters<typeof navigate>[0] }[] = [
-    { id: 'home',         label: 'Home',     icon: <Home size={22} strokeWidth={2} />,          screen: 'D1_HOME' },
-    { id: 'jobs',         label: 'Jobs',     icon: <Briefcase size={22} strokeWidth={2} />,     screen: 'E1_JOBS' },
-    { id: 'applications', label: 'Applied',  icon: <ListChecks size={22} strokeWidth={2} />,    screen: 'F1_APPLICATIONS' },
-    { id: 'care',         label: 'Care',     icon: <HeartHandshake size={22} strokeWidth={2} />, screen: 'G1_CARE' },
-    { id: 'profile',      label: 'Profile',  icon: <User size={22} strokeWidth={2} />,           screen: 'I1_PROFILE' },
+    { id: 'home',         label: 'Home',     icon: <Home size={22} strokeWidth={2} />,     screen: 'D1_HOME' },
+    { id: 'jobs',         label: 'Jobs',     icon: <Briefcase size={22} strokeWidth={2} />, screen: 'E1_JOBS' },
+    { id: 'applications', label: 'Applied',  icon: <ListChecks size={22} strokeWidth={2} />, screen: 'F1_APPLICATIONS' },
+    { id: 'disha',        label: 'Disha',    icon: <Bot size={22} strokeWidth={2} />,       screen: 'N1_DISHA' },
+    { id: 'profile',      label: 'Profile',  icon: <User size={22} strokeWidth={2} />,      screen: 'I1_PROFILE' },
   ];
 
   return (
@@ -665,6 +678,165 @@ export function StarRating({ rating, count }: { rating: number; count?: number }
         ))}
       </div>
       <span className="text-caption text-medium">{rating.toFixed(1)}{count ? ` (${count})` : ''}</span>
+    </div>
+  );
+}
+
+// =============================================
+//  FILL WITH AI OVERLAY
+// =============================================
+interface FillWithAIProps {
+  pageTitle: string;
+  fields: string[];
+  onFill: (values: Record<string, string>) => void;
+}
+
+export function FillWithAIButton({ pageTitle, fields, onFill }: FillWithAIProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleFill = (values: Record<string, string>) => {
+    onFill(values);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Fill with AI"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          padding: '6px 10px',
+          borderRadius: 8,
+          border: '1px solid var(--primary)',
+          background: 'var(--primary-light)',
+          color: 'var(--primary)',
+          fontSize: 12,
+          fontWeight: 600,
+          cursor: 'pointer',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Sparkles size={14} />
+        Fill with AI
+      </button>
+      {open && <FillWithAIOverlay pageTitle={pageTitle} fields={fields} onClose={() => setOpen(false)} onFill={handleFill} />}
+    </>
+  );
+}
+
+function FillWithAIOverlay({ pageTitle, fields, onClose, onFill }: FillWithAIProps & { onClose: () => void }) {
+  const [messages, setMessages] = useState<{ role: 'ai' | 'user'; text: string }[]>([{
+    role: 'ai',
+    text: `Hi! I'll help you fill in the ${pageTitle} fields. Let's go through them together. What's your ${fields[0]}?`,
+  }]);
+  const [input, setInput] = useState('');
+  const [fieldIdx, setFieldIdx] = useState(0);
+  const [collected, setCollected] = useState<Record<string, string>>({});
+  const [done, setDone] = useState(false);
+
+  const handleSend = (text: string) => {
+    if (!text.trim()) return;
+    const newCollected = { ...collected, [fields[fieldIdx]]: text.trim() };
+    setCollected(newCollected);
+    const userMsg = { role: 'user' as const, text: text.trim() };
+    const nextIdx = fieldIdx + 1;
+
+    if (nextIdx >= fields.length) {
+      setMessages(m => [...m, userMsg, { role: 'ai', text: `Got it! I've filled in all the fields. Check them over and make any corrections, then tap Continue.` }]);
+      setDone(true);
+    } else {
+      setMessages(m => [...m, userMsg, { role: 'ai', text: `Got it. Now, what's your ${fields[nextIdx]}?` }]);
+      setFieldIdx(nextIdx);
+    }
+    setInput('');
+  };
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        bottom: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'var(--base)',
+        maxWidth: 'var(--max-w)',
+        margin: '0 auto',
+      }}
+    >
+      {/* Header */}
+      <header style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: '1px solid var(--surface)', flexShrink: 0 }}>
+        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Sparkles size={16} color="white" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--text-high)' }}>Fill with AI</div>
+          <div style={{ fontSize: 12, color: 'var(--text-medium)' }}>{pageTitle}</div>
+        </div>
+        <button onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, color: 'var(--text-medium)' }}>
+          <X size={20} />
+        </button>
+      </header>
+
+      {/* Messages */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {messages.map((msg, i) => (
+          <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+            {msg.role === 'ai' && (
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 8, flexShrink: 0, alignSelf: 'flex-end' }}>
+                <Sparkles size={14} color="white" />
+              </div>
+            )}
+            <div style={{
+              background: msg.role === 'user' ? 'var(--primary)' : 'var(--surface)',
+              color: msg.role === 'user' ? 'white' : 'var(--text-high)',
+              padding: '10px 14px',
+              borderRadius: msg.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
+              maxWidth: '80%',
+              fontSize: 14,
+              lineHeight: 1.5,
+            }}>
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        {done && (
+          <button
+            onClick={() => onFill(collected)}
+            style={{ marginTop: 8, background: 'var(--primary)', color: 'white', padding: '14px', borderRadius: 12, fontWeight: 600, border: 'none', cursor: 'pointer', fontSize: 14 }}
+          >
+            Apply to form
+          </button>
+        )}
+      </div>
+
+      {/* Composer */}
+      {!done && (
+        <div style={{ padding: '12px 16px', borderTop: '1px solid var(--surface)', display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
+          <input
+            type="text"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSend(input)}
+            placeholder="Type your answer..."
+            style={{ flex: 1, padding: '10px 14px', borderRadius: 24, border: '1px solid var(--surface)', background: 'var(--surface)', fontSize: 14, outline: 'none' }}
+          />
+          <button
+            onClick={() => handleSend(input)}
+            aria-label="Send"
+            style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--primary)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+          >
+            <Send size={16} color="white" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

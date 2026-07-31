@@ -32,6 +32,7 @@ import {
   DisabilityScreen,
   PreferencesScreen,
   LanguagesScreen,
+  GuardianScreen,
   ProfileReviewScreen,
   CelebrationScreen,
 } from './screens-c';
@@ -94,6 +95,9 @@ import {
   TravelRequestScreen,
 } from './screens-k-m';
 
+// --- N Screens (Disha AI) ---
+import { DishaScreen } from './screens-n';
+
 // =============================================
 //  MAIN SCREEN ROUTER
 // =============================================
@@ -130,6 +134,7 @@ function AppRouter() {
     C5D_DISABILITY:    <DisabilityScreen />,
     C5E_PREFERENCES:   <PreferencesScreen />,
     C5F_LANGUAGES:     <LanguagesScreen />,
+    C5G_GUARDIAN:      <GuardianScreen />,
     C6_PROFILE_REVIEW: <ProfileReviewScreen />,
     C7_CELEBRATION:    <CelebrationScreen />,
 
@@ -196,6 +201,9 @@ function AppRouter() {
     M3B_PRACTICE_SESSION:  <PracticeSessionScreen />,
     M3C_PRACTICE_FEEDBACK: <PracticeFeedbackScreen />,
     M4A_TRAVEL_REQ:        <TravelRequestScreen />,
+
+    // N — Disha AI
+    N1_DISHA:              <DishaScreen />,
   };
 
   return (

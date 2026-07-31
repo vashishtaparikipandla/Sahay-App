@@ -98,7 +98,7 @@ export function CareHomeScreen() {
         </button>
       </div>
 
-      <BottomNav active="care" />
+      <BottomNav active="home" />
     </div>
   );
 }

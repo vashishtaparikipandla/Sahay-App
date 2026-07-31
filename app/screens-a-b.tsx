@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Globe, Check, ArrowRight, Phone, ShieldCheck, Camera,
   FileText, Lock, Info, AlertTriangle, Upload, RefreshCw,
-  MessageCircle, IdCard, ChevronDown, ChevronUp
+  MessageCircle, IdCard, ChevronDown, ChevronUp, MapPin
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
 import { Btn, OTPInput, Stepper, InfoCard, AccordionItem } from './components';
@@ -948,15 +948,29 @@ export function UDIDScreen() {
 export function UDIDUploadScreen() {
   const { navigate, back } = useRouter();
   const [stage, setStage] = useState<'upload' | 'review'>('upload');
-  const [flagged] = useState([false, true, false, false, false]); // disability % is flagged
 
-  const fields = [
+  const editableFields = [
     { label: 'Full name', value: 'Priya Sharma' },
     { label: 'Disability category', value: 'Locomotor disability' },
-    { label: 'Disability percentage', value: '60%', flagged: true },
     { label: 'Issuing authority', value: 'SADP, Andhra Pradesh' },
     { label: 'Issue date', value: '15 March 2021' },
   ];
+
+  const STATES = ['Andhra Pradesh', 'Delhi', 'Gujarat', 'Karnataka', 'Kerala', 'Maharashtra', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'West Bengal'];
+  const CITIES_BY_STATE: Record<string, string[]> = {
+    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Tirupati'],
+    'Delhi': ['New Delhi', 'Dwarka', 'Noida', 'Gurgaon'],
+    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot'],
+    'Karnataka': ['Bengaluru', 'Mysuru', 'Mangaluru', 'Hubballi'],
+    'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur'],
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik'],
+    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem'],
+    'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
+    'Uttar Pradesh': ['Lucknow', 'Kanpur', 'Agra', 'Varanasi'],
+    'West Bengal': ['Kolkata', 'Howrah', 'Durgapur', 'Asansol'],
+  };
+  const [resState, setResState] = useState('');
+  const [resCity, setResCity] = useState('');
 
   if (stage === 'upload') {
     return (
@@ -1019,25 +1033,61 @@ export function UDIDUploadScreen() {
           We've filled this in automatically — please check it's correct before continuing.
         </InfoCard>
 
-        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {fields.map((f, i) => (
-            <div key={i}>
-              <div
-                className="input-group"
-                style={f.flagged ? { border: '2px solid var(--warning)', borderRadius: 12, padding: 8, background: 'var(--warning-light)' } : undefined}
-              >
-                <label className="input-label">
-                  {f.label}
-                  {f.flagged && (
-                    <span style={{ marginLeft: 6, color: 'var(--warning)', display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11 }}>
-                      <AlertTriangle size={11} strokeWidth={2} /> Please confirm
-                    </span>
-                  )}
-                </label>
-                <input className="input-field" defaultValue={f.value} style={f.flagged ? { borderColor: 'var(--warning)', background: 'white' } : undefined} />
-              </div>
+        {/* Disability % — read-only, from UDID record */}
+        <div style={{ marginTop: 24, padding: '12px 14px', background: 'var(--surface)', borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p className="text-caption text-medium">Disability percentage</p>
+            <p className="text-body" style={{ fontWeight: 700, marginTop: 2 }}>60%</p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--text-disabled)', fontSize: 12 }}>
+            <Lock size={12} strokeWidth={2} />
+            From your UDID record
+          </div>
+        </div>
+
+        {/* Editable fields */}
+        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {editableFields.map((f, i) => (
+            <div key={i} className="input-group">
+              <label className="input-label">{f.label}</label>
+              <input className="input-field" defaultValue={f.value} />
             </div>
           ))}
+        </div>
+
+        {/* Place of residence — required */}
+        <div style={{ marginTop: 20, padding: '14px', background: 'var(--primary-light)', borderRadius: 10, border: '1.5px solid var(--primary-50)' }}>
+          <p className="text-body" style={{ fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <MapPin size={15} color="var(--primary)" />
+            Place of residence <span style={{ color: 'var(--error)' }}>*</span>
+          </p>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <div className="input-group" style={{ flex: 1 }}>
+              <label className="input-label">State</label>
+              <select
+                className="input-field"
+                value={resState}
+                onChange={e => { setResState(e.target.value); setResCity(''); }}
+                style={{ cursor: 'pointer' }}
+              >
+                <option value="">Select state</option>
+                {STATES.map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div className="input-group" style={{ flex: 1 }}>
+              <label className="input-label">City</label>
+              <select
+                className="input-field"
+                value={resCity}
+                onChange={e => setResCity(e.target.value)}
+                disabled={!resState}
+                style={{ cursor: resState ? 'pointer' : 'not-allowed', opacity: resState ? 1 : 0.5 }}
+              >
+                <option value="">Select city</option>
+                {(CITIES_BY_STATE[resState] || []).map(c => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ type Screen =
   | 'B4_UDID' | 'B5_UDID_UPLOAD' | 'B6_SELFIE' | 'B7_VERIFY_STATUS' | 'B8_VERIFY_HELP'
   | 'C1_PROFILE_CHOICE' | 'C2_LINKEDIN' | 'C3_RESUME' | 'C4_RESUME_REVIEW'
   | 'C5A_EDUCATION' | 'C5B_EXPERIENCE' | 'C5C_SKILLS' | 'C5D_DISABILITY' 
-  | 'C5E_PREFERENCES' | 'C5F_LANGUAGES' | 'C6_PROFILE_REVIEW' | 'C7_CELEBRATION'
+  | 'C5E_PREFERENCES' | 'C5F_LANGUAGES' | 'C5G_GUARDIAN' | 'C6_PROFILE_REVIEW' | 'C7_CELEBRATION'
   | 'D1_HOME'
   | 'E1_JOBS' | 'E2_FILTERS' | 'E3_JOB_DETAIL' | 'E4_APPLY_CONFIRM' | 'E5_SUBMITTED'
   | 'F1_APPLICATIONS' | 'F2_APP_DETAIL' | 'F3_INTERVIEW' | 'F4_WITHDRAW'
@@ -24,7 +24,8 @@ type Screen =
   | 'J1_NO_INTERNET' | 'J2_SERVER_ERROR' | 'J3_UPDATE' | 'J4_SUSPENDED'
   | 'K1_SAATHI_ENTRY' | 'K2_CONSENT' | 'K3_TIER' | 'K4_PROFILE' | 'K7_REVIEW'
   | 'L1_MODES'
-  | 'M2A_REVIEW' | 'M3A_PRACTICE_SETUP' | 'M3B_PRACTICE_SESSION' | 'M3C_PRACTICE_FEEDBACK' | 'M4A_TRAVEL_REQ';
+  | 'M2A_REVIEW' | 'M3A_PRACTICE_SETUP' | 'M3B_PRACTICE_SESSION' | 'M3C_PRACTICE_FEEDBACK' | 'M4A_TRAVEL_REQ'
+  | 'N1_DISHA';
 
 interface RouterContextType {
   screen: Screen;
@@ -74,7 +75,6 @@ interface AppState {
   notifications: number;
   bookmarkedJobs: string[];
   v2Enabled: boolean;
-  chatMode: boolean;
   saathi: {
     enabled: boolean;
     handlerName: string;
@@ -89,12 +89,21 @@ interface AppState {
     switchControl: boolean;
     calmMode: boolean;
   };
+  guardian: {
+    name: string;
+    relation: string;
+    phone: string;
+    email: string;
+    address: string;
+  };
 }
 
 interface AppContextType {
   state: AppState;
   setState: React.Dispatch<React.SetStateAction<AppState>>;
 }
+
+const defaultGuardian = { name: '', relation: '', phone: '', email: '', address: '' };
 
 const AppContext = createContext<AppContextType>({
   state: {
@@ -106,9 +115,9 @@ const AppContext = createContext<AppContextType>({
     notifications: 3,
     bookmarkedJobs: [],
     v2Enabled: false,
-    chatMode: false,
     saathi: { enabled: false, handlerName: '', relation: '', tier: 'view' },
     experienceModes: { voiceFirst: false, signLanguage: false, aac: false, easyRead: false, switchControl: false, calmMode: false },
+    guardian: defaultGuardian,
   },
   setState: () => {},
 });
@@ -123,9 +132,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     notifications: 3,
     bookmarkedJobs: [],
     v2Enabled: false,
-    chatMode: false,
     saathi: { enabled: false, handlerName: '', relation: '', tier: 'view' },
     experienceModes: { voiceFirst: false, signLanguage: false, aac: false, easyRead: false, switchControl: false, calmMode: false },
+    guardian: defaultGuardian,
   });
 
   return (
