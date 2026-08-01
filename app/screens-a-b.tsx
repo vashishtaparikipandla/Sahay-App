@@ -6,7 +6,7 @@ import {
   MessageCircle, IdCard, ChevronDown, ChevronUp, MapPin
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { Btn, OTPInput, Stepper, InfoCard, AccordionItem } from './components';
+import { DishaFAB, AppHeader, Btn, OTPInput, Stepper, InfoCard, AccordionItem } from './components';
 
 // =============================================
 //  A1 — SPLASH SCREEN
@@ -395,12 +395,7 @@ export function MobileScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <div className="screen-content" style={{ paddingTop: 32 }}>
         <h1 className="text-h2" style={{ marginBottom: 8 }}>What's your mobile number?</h1>
@@ -408,49 +403,46 @@ export function MobileScreen() {
           We'll send a one-time code to verify your number.
         </p>
 
-        {/* Phone input with country code */}
-        <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '14px 12px',
-              border: '2px solid var(--surface)',
-              borderRadius: 'var(--radius-card)',
-              background: 'var(--surface)',
-              fontSize: 'var(--body-l)',
-              fontWeight: 600,
-              color: 'var(--text-medium)',
-              flexShrink: 0,
-              minHeight: 52,
-            }}
-          >
-            🇮🇳 +91
-          </div>
-          <div style={{ flex: 1 }}>
-            <div className="input-group">
-              <label htmlFor="phone" className="input-label">Mobile number</label>
-              <div className="input-with-icon">
-                <Phone size={18} strokeWidth={2} className="input-icon" aria-hidden="true" />
-                <input
-                  id="phone"
-                  className={`input-field ${error ? 'has-error' : ''}`}
-                  type="tel"
-                  inputMode="numeric"
-                  placeholder="9876543210"
-                  value={number}
-                  onChange={handleChange}
-                  aria-describedby={error ? 'phone-error' : 'phone-helper'}
-                  aria-invalid={!!error}
-                  style={{ paddingLeft: 44 }}
-                  maxLength={10}
-                />
-              </div>
-              {error && <p id="phone-error" className="input-error" role="alert"><span>⚠</span> {error}</p>}
-              {!error && <p id="phone-helper" className="input-helper">We'll send a one-time code</p>}
+        <div className="input-group">
+          <label htmlFor="phone" className="input-label">Mobile number</label>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '0 12px',
+                border: '2px solid var(--surface)',
+                borderRadius: 'var(--radius-card)',
+                background: 'var(--surface)',
+                fontSize: 'var(--body-l)',
+                fontWeight: 600,
+                color: 'var(--text-medium)',
+                flexShrink: 0,
+                height: 52,
+              }}
+            >
+              🇮🇳 +91
+            </div>
+            <div className="input-with-icon" style={{ flex: 1 }}>
+              <Phone size={18} strokeWidth={2} className="input-icon" aria-hidden="true" />
+              <input
+                id="phone"
+                className={`input-field ${error ? 'has-error' : ''}`}
+                type="tel"
+                inputMode="numeric"
+                placeholder="9876543210"
+                value={number}
+                onChange={handleChange}
+                aria-describedby={error ? 'phone-error' : 'phone-helper'}
+                aria-invalid={!!error}
+                style={{ paddingLeft: 44, height: 52 }}
+                maxLength={10}
+              />
             </div>
           </div>
+          {error && <p id="phone-error" className="input-error" role="alert"><span>⚠</span> {error}</p>}
+          {!error && <p id="phone-helper" className="input-helper">We'll send a one-time code</p>}
         </div>
 
         {/* Voice call fallback */}
@@ -527,12 +519,7 @@ export function OTPScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <div className="screen-content" style={{ paddingTop: 32 }}>
         <h1 className="text-h2" style={{ marginBottom: 8 }}>Enter the code</h1>
@@ -609,12 +596,7 @@ export function VerifyIntroScreen() {
   const { navigate, back } = useRouter();
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <div className="screen-content" style={{ paddingTop: 16, textAlign: 'center' }}>
         {/* Illustration */}
@@ -708,12 +690,7 @@ export function AadhaarScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <Stepper current={1} total={3} label="Step 1 of 3 — Aadhaar" />
 
@@ -783,12 +760,7 @@ export function AadhaarOTPScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={1} total={3} label="Step 1 of 3 — Aadhaar OTP" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -858,12 +830,7 @@ export function UDIDScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={2} total={3} label="Step 2 of 3 — UDID" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -975,12 +942,7 @@ export function UDIDUploadScreen() {
   if (stage === 'upload') {
     return (
       <div className="screen">
-        <header className="topbar">
-          <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <div style={{ width: 40 }} />
-        </header>
+        <AppHeader />
         <Stepper current={2} total={3} label="Step 2 of 3 — Upload UDID" />
         <div className="screen-content" style={{ paddingTop: 24 }}>
           <h1 className="text-h2" style={{ marginBottom: 8 }}>Upload your UDID card</h1>
@@ -1020,13 +982,7 @@ export function UDIDUploadScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={() => setStage('upload')} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Confirm your details</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Confirm your details" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <InfoCard icon={<Info size={14} strokeWidth={2} />} variant="info">
@@ -1109,12 +1065,7 @@ export function SelfieScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={3} total={3} label="Step 3 of 3 — Selfie" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -1280,13 +1231,7 @@ export function VerifyHelpScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Verification help</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Verification help" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         {faqs.map((f, i) => (

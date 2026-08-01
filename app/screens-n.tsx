@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, Mic, Paperclip, Sparkles, Briefcase, MapPin, ArrowRight, Clock } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { BottomNav } from './components';
+import { AppHeader, BottomNav } from './components';
 
 // =============================================
 //  DISHA AVATAR

@@ -8,10 +8,8 @@ import {
   ShieldCheck, ArrowRight, Accessibility
 } from 'lucide-react';
 import { useRouter } from './context';
-import {
-  BottomNav, Btn, Badge, EmptyState, StarRating,
-  SectionHeader, InfoCard, AccordionItem, Avatar
-} from './components';
+import { AppHeader, BottomNav, Btn, Badge, EmptyState, StarRating,
+  SectionHeader, InfoCard, AccordionItem, Avatar } from './components';
 import { PROVIDERS, SCHEMES, COMMUNITY_POSTS, MENTORS } from './data';
 
 // =============================================
@@ -29,11 +27,7 @@ export function CareHomeScreen() {
 
   return (
     <div className="screen screen-with-nav">
-      <header className="topbar">
-        <div style={{ width: 40 }} />
-        <h1 className="topbar-title text-h1 topbar-title-center">Care</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Care" centerTitle showBack={false} />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 80 }}>
         {/* 2×2 grid */}
@@ -118,13 +112,7 @@ export function TherapyListScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Book a session</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Book a session" />
 
       {/* Category filters */}
       <div style={{ borderBottom: '1px solid var(--surface)', paddingBottom: 10 }}>
@@ -199,12 +187,7 @@ export function ProviderDetailScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 100 }}>
         {/* Profile */}
@@ -283,13 +266,7 @@ export function BookingConfirmScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Confirm booking</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Confirm booking" centerTitle />
 
       <div className="screen-content" style={{ paddingTop: 24, paddingBottom: 100 }}>
         <div className="card" style={{ marginBottom: 24 }}>
@@ -344,13 +321,7 @@ export function MyBookingsScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">My bookings</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="My bookings" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <p className="text-overline text-medium" style={{ marginBottom: 12 }}>Upcoming</p>
@@ -406,13 +377,7 @@ export function CommunityScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Community</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Community" />
 
       {/* Community guidelines */}
       <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--surface)', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -503,13 +468,7 @@ export function ThreadScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Post</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Post" />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         {/* Original post */}
@@ -581,13 +540,7 @@ export function MentorshipScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Mentorship</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Mentorship" />
 
       <div style={{ padding: '8px 16px' }}>
         <div className="segment-group">
@@ -658,13 +611,7 @@ export function BenefitsScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Your benefits</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Your benefits" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <InfoCard icon={<ShieldCheck size={14} strokeWidth={2} />} variant="success">
@@ -726,12 +673,7 @@ export function SchemeDetailScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         <span className="badge badge-verified" style={{ marginBottom: 12 }}>{scheme.ministry}</span>
@@ -812,18 +754,7 @@ export function DocVaultScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Document vault</h1>
-        <button
-          style={{ width: 40, height: 40, borderRadius: 8, background: 'var(--primary-light)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}
-          aria-label="Upload new document"
-        >
-          <Plus size={20} strokeWidth={2} />
-        </button>
-      </header>
+      <AppHeader title="Document vault" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <InfoCard icon={<Lock size={14} strokeWidth={2} />} variant="info">

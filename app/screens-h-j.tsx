@@ -8,7 +8,7 @@ import {
   Store, Info, ArrowRight, Globe
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { BottomNav, TopBar, Btn, SettingRow, ToggleRow, AccordionItem, InfoCard, Badge } from './components';
+import { DishaFAB, AppHeader, BottomNav, TopBar, Btn, SettingRow, ToggleRow, AccordionItem, InfoCard, Badge } from './components';
 import { APPLICATIONS } from './data';
 
 // =============================================
@@ -98,13 +98,7 @@ export function NotificationsScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Notifications</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Notifications" />
 
       <div className="screen-content" style={{ paddingTop: 8 }}>
         <p className="text-overline text-medium" style={{ padding: '12px 0 8px' }}>Today</p>
@@ -145,13 +139,7 @@ export function ProfileViewScreen() {
 
   return (
     <div className="screen screen-with-nav">
-      <header className="topbar">
-        <div style={{ width: 40 }} />
-        <h1 className="topbar-title text-h3 topbar-title-center">My profile</h1>
-        <button className="topbar-action" onClick={() => navigate('I3_SETTINGS')} aria-label="Settings">
-          <Settings size={22} strokeWidth={2} />
-        </button>
-      </header>
+      <AppHeader title="My profile" centerTitle showBack={false} />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 80 }}>
         {/* Profile header */}
@@ -220,13 +208,7 @@ export function EditProfileScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Edit profile</h1>
-        <button style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: 8, padding: '6px 14px', fontWeight: 600, cursor: 'pointer', fontSize: 'var(--body)' }}>Save</button>
-      </header>
+      <AppHeader title="Edit profile" />
 
       <div className="screen-content" style={{ paddingTop: 24, paddingBottom: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div className="input-group">
@@ -262,13 +244,7 @@ export function SettingsScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Settings</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Settings" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <div className="card-surface" style={{ marginBottom: 16 }}>
@@ -317,13 +293,7 @@ export function AccessibilityScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Accessibility</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Accessibility" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         {/* Text size */}
@@ -408,13 +378,7 @@ export function PrivacyScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Privacy & data</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Privacy & data" />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <h2 className="text-h3" style={{ marginBottom: 12 }}>What we collect</h2>
@@ -491,13 +455,7 @@ export function HelpScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Help & support</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Help & support" />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         {/* Search */}

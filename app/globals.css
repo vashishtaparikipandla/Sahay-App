@@ -128,17 +128,63 @@ body {
 }
 
 /* =============================================
-   MOBILE VIEWPORT CONTAINER
+   MOBILE VIEWPORT CONTAINER (Device Frame)
    =============================================*/
 
+.device-frame {
+  position: relative;
+  width: 412px;
+  height: 917px;
+  background: var(--base);
+  border-radius: 40px;
+  box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 15px #333, 0 30px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.device-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 28px;
+  background: #1a1a1a;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 9999;
+}
+
+.device-status-bar {
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-high);
+  flex-shrink: 0;
+  background: var(--base);
+  z-index: 9998;
+  position: relative;
+}
+
+.device-status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 #app-root {
-  max-width: var(--max-w);
-  min-height: 100dvh;
-  margin: 0 auto;
+  width: 100%;
+  flex: 1;
   position: relative;
   background: var(--base);
   overflow-x: hidden;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.04), 0 4px 40px rgba(0,0,0,0.08);
+  overflow-y: auto;
 }
 
 /* =============================================
@@ -1419,9 +1465,15 @@ body {
   gap: var(--sp-3);
   overflow-x: auto;
   padding-bottom: var(--sp-2);
+  padding-inline: 16px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+}
+
+.h-scroll::after {
+  content: '';
+  flex: 0 0 1px;
 }
 
 .h-scroll::-webkit-scrollbar { display: none; }

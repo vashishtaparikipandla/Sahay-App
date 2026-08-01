@@ -7,11 +7,9 @@ import {
   CheckCircle2, ListChecks, Video, Phone, Trash2, ChevronRight, Clock
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import {
-  BottomNav, TopBar, Btn, Badge, JobCard, EmptyState,
+import { AppHeader, BottomNav, TopBar, Btn, Badge, JobCard, EmptyState,
   SkeletonCard, InfoCard, SectionHeader, BottomSheet,
-  SettingRow, Toast
-} from './components';
+  SettingRow, Toast } from './components';
 import { JOBS, APPLICATIONS } from './data';
 
 // =============================================
@@ -441,15 +439,7 @@ export function JobDetailScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Job details</h1>
-        <button className="topbar-action" onClick={() => setSaved(!saved)} aria-label={saved ? 'Remove bookmark' : 'Bookmark job'}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill={saved ? 'var(--primary)' : 'none'} stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </button>
-      </header>
+      <AppHeader title="Job details" />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         {/* Company header */}
@@ -531,13 +521,7 @@ export function ApplyConfirmScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Review your application</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Review your application" centerTitle />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 100 }}>
         {/* Profile preview */}
@@ -650,11 +634,7 @@ export function ApplicationsScreen() {
 
   return (
     <div className="screen screen-with-nav">
-      <header className="topbar">
-        <div style={{ width: 40 }} />
-        <h1 className="topbar-title text-h3 topbar-title-center">My applications</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="My applications" centerTitle showBack={false} />
 
       <div style={{ padding: '8px 16px', background: 'var(--base)' }}>
         <div className="segment-group">
@@ -717,13 +697,7 @@ export function AppDetailScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Application</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Application" />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         {/* Header */}
@@ -829,13 +803,7 @@ export function InterviewScheduleScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3">Choose a slot</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Choose a slot" />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 100 }}>
         <h1 className="text-h2" style={{ marginBottom: 8 }}>Schedule your interview</h1>

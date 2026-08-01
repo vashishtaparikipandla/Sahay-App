@@ -4,7 +4,7 @@ import { useRouter } from './context';
 import {
   Home, Briefcase, ListChecks, User,
   ChevronLeft, Bell, Search, MoreVertical,
-  Bot, Sparkles, Send, Mic, Paperclip, X
+  Bot, Sparkles, Send, Mic, Paperclip, X, Trash2
 } from 'lucide-react';
 
 // =============================================
@@ -29,7 +29,7 @@ function SahayMark() {
   );
 }
 
-export function TopBar({ title, showBack = true, centerTitle, rightAction, transparent }: TopBarProps) {
+export function AppHeader({ title, showBack = true, centerTitle, rightAction, transparent }: TopBarProps) {
   const { back } = useRouter();
   return (
     <header
@@ -55,6 +55,8 @@ export function TopBar({ title, showBack = true, centerTitle, rightAction, trans
     </header>
   );
 }
+
+export const TopBar = AppHeader;
 
 // =============================================
 //  BOTTOM NAVIGATION
@@ -728,20 +730,48 @@ export function FillWithAIButton({ pageTitle, fields, onFill }: FillWithAIProps)
 }
 
 function FillWithAIOverlay({ pageTitle, fields, onClose, onFill }: FillWithAIProps & { onClose: () => void }) {
-  const [messages, setMessages] = useState<{ role: 'ai' | 'user'; text: string }[]>([{
-    role: 'ai',
-    text: `Hi! I'll help you fill in the ${pageTitle} fields. Let's go through them together. What's your ${fields[0]}?`,
-  }]);
+  const isDemo = pageTitle.toLowerCase().includes('experience');
+  
+  const [messages, setMessages] = useState<{ role: 'ai' | 'user'; text: string }[]>(() => {
+    if (isDemo) {
+      return [{ role: 'ai', text: "Let's fill in your work experience — tell me about your most recent job, or just say 'I haven't worked before' if this is your first role." }];
+    }
+    return [{ role: 'ai', text: `Hi! I'll help you fill in the ${pageTitle} fields. Let's go through them together. What's your ${fields[0]}?` }];
+  });
+  
   const [input, setInput] = useState('');
   const [fieldIdx, setFieldIdx] = useState(0);
   const [collected, setCollected] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
+  const [demoStep, setDemoStep] = useState(0);
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
+    const userMsg = { role: 'user' as const, text: text.trim() };
+    
+    if (isDemo) {
+      if (demoStep === 0) {
+        setMessages(m => [...m, userMsg, { role: 'ai', text: "Got it — Barista at Café Coffee Day, roughly 2021 to 2023. Do you have anything like an offer letter or a payslip from that job? You can skip this if not." }]);
+        setDemoStep(1);
+      } else if (demoStep === 1) {
+        setMessages(m => [...m, userMsg, { role: 'ai', text: "Any other previous roles, or is that the only one?" }]);
+        setDemoStep(2);
+      } else if (demoStep === 2) {
+        setMessages(m => [...m, userMsg, { role: 'ai', text: "Great — here's what I've got for you." }]);
+        setCollected({
+          'Job title': 'Barista',
+          'Company': 'Café Coffee Day',
+          'From': 'Jan 2021',
+          'To': 'Dec 2023'
+        });
+        setDone(true);
+      }
+      setInput('');
+      return;
+    }
+
     const newCollected = { ...collected, [fields[fieldIdx]]: text.trim() };
     setCollected(newCollected);
-    const userMsg = { role: 'user' as const, text: text.trim() };
     const nextIdx = fieldIdx + 1;
 
     if (nextIdx >= fields.length) {
@@ -893,5 +923,75 @@ export function ConversationalBubble({
         </div>
       )}
     </div>
+  );
+}
+
+// =============================================
+//  REPEATABLE ENTRY CARD
+// =============================================
+interface RepeatableEntryCardProps {
+  title: string;
+  onRemove?: () => void;
+  children: React.ReactNode;
+}
+
+export function RepeatableEntryCard({ title, onRemove, children }: RepeatableEntryCardProps) {
+  return (
+    <div className="card-border" style={{ marginTop: 20 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <span className="text-caption text-medium" style={{ fontWeight: 700 }}>{title}</span>
+        {onRemove && (
+          <button onClick={onRemove} aria-label="Remove this entry" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--error)' }}>
+            <Trash2 size={16} strokeWidth={2} />
+          </button>
+        )}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// =============================================
+//  DISHA AI FAB
+// =============================================
+export function DishaFAB({ pageTitle, fields, onFill }: FillWithAIProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleFill = (values: Record<string, string>) => {
+    onFill(values);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Fill with Disha"
+        style={{
+          position: 'fixed',
+          bottom: 'calc(var(--bottomnav-h) + 16px)',
+          right: '16px',
+          zIndex: 150,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          padding: '12px 20px',
+          borderRadius: 999,
+          border: 'none',
+          background: 'var(--primary)',
+          color: 'white',
+          fontSize: 14,
+          fontWeight: 600,
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(37, 99, 235, 0.4)',
+        }}
+      >
+        <Sparkles size={18} />
+        Fill with Disha
+      </button>
+      {open && <FillWithAIOverlay pageTitle={pageTitle} fields={fields} onClose={() => setOpen(false)} onFill={handleFill} />}
+    </>
   );
 }

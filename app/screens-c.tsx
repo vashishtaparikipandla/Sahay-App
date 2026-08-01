@@ -7,7 +7,7 @@ import {
   Volume2, PenLine, HeartHandshake
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { Btn, Stepper, InfoCard, Badge, ToggleRow, FillWithAIButton } from './components';
+import { AppHeader, Btn, Stepper, InfoCard, Badge, ToggleRow, FillWithAIButton, RepeatableEntryCard, DishaFAB } from './components';
 
 // =============================================
 //  C1 — PROFILE SETUP CHOICE
@@ -105,13 +105,7 @@ export function LinkedInScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Import from LinkedIn</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Import from LinkedIn" centerTitle />
       <div className="screen-content" style={{ paddingTop: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
         {loading ? (
           <>
@@ -160,13 +154,7 @@ export function ResumeUploadScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Upload resume</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Upload resume" centerTitle />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
         <h1 className="text-h2" style={{ marginBottom: 8 }}>Upload your resume</h1>
@@ -233,13 +221,7 @@ export function ResumeReviewScreen() {
   const { navigate, back } = useRouter();
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Review details</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Review details" centerTitle />
       <div className="screen-content" style={{ paddingTop: 16 }}>
         <InfoCard icon={<Info size={14} strokeWidth={2} />} variant="info">
           We've extracted these details from your resume — check everything is correct.
@@ -279,19 +261,14 @@ export function ResumeReviewScreen() {
 export function EducationScreen() {
   const { navigate, back } = useRouter();
   const [noFormal, setNoFormal] = useState(false);
-  const [entries, setEntries] = useState([{ degree: '', institution: '', year: '', ongoing: false }]);
+  const [entries, setEntries] = useState([{ id: 'init', degree: '', institution: '', year: '', ongoing: false }]);
 
-  const addEntry = () => setEntries(e => [...e, { degree: '', institution: '', year: '', ongoing: false }]);
-  const removeEntry = (i: number) => setEntries(e => e.filter((_, idx) => idx !== i));
+  const addEntry = () => setEntries(e => [...e, { id: Date.now().toString() + Math.random(), degree: '', institution: '', year: '', ongoing: false }]);
+  const removeEntry = (id: string) => setEntries(e => e.filter(item => item.id !== id));
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Education" />
       <Stepper current={1} total={6} label="Step 1 of 6 — Education" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -300,28 +277,6 @@ export function EducationScreen() {
           <h1 className="text-h2">Education</h1>
         </div>
         <p className="text-body text-medium" style={{ marginBottom: 24 }}>Add your educational background. All fields are optional.</p>
-
-        {/* School certificates */}
-        <div style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, marginBottom: 24 }}>
-          <h2 className="text-h3" style={{ marginBottom: 4 }}>School certificates</h2>
-          <p className="text-caption text-medium" style={{ marginBottom: 16 }}>Optional but helps your profile stand out.</p>
-          {[
-            { label: '10th (Secondary) Certificate', id: 'cert10' },
-            { label: '12th (Senior Secondary) Certificate', id: 'cert12' },
-          ].map(cert => (
-            <div key={cert.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--border, #E2E8F0)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <FileCheck2 size={18} color="var(--primary)" />
-                <span className="text-body" style={{ fontSize: 13 }}>{cert.label}</span>
-              </div>
-              <button
-                style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, background: 'none', border: '1px solid var(--primary)', padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}
-              >
-                Add later
-              </button>
-            </div>
-          ))}
-        </div>
 
         <ToggleRow
           id="no-formal"
@@ -333,38 +288,53 @@ export function EducationScreen() {
 
         {!noFormal && (
           <>
+            {/* School certificates */}
+            <div style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, marginTop: 24, marginBottom: 24 }}>
+              <h2 className="text-h3" style={{ marginBottom: 4 }}>School certificates</h2>
+              <p className="text-caption text-medium" style={{ marginBottom: 16 }}>Optional but helps your profile stand out.</p>
+              {[
+                { label: '10th (Secondary) Certificate', id: 'cert10' },
+                { label: '12th (Senior Secondary) Certificate', id: 'cert12' },
+              ].map(cert => (
+                <div key={cert.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--border, #E2E8F0)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <FileCheck2 size={18} color="var(--primary)" />
+                    <span className="text-body" style={{ fontSize: 13 }}>{cert.label}</span>
+                  </div>
+                  <button style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, background: 'none', border: '1px solid var(--primary)', padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}>
+                    Add later
+                  </button>
+                </div>
+              ))}
+            </div>
+
             {entries.map((entry, i) => (
-              <div key={i} className="card-border" style={{ marginTop: 20 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <span className="text-caption text-medium" style={{ fontWeight: 700 }}>Education {i + 1}</span>
-                  {entries.length > 1 && (
-                    <button onClick={() => removeEntry(i)} aria-label="Remove this entry" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--error)' }}>
-                      <Trash2 size={16} strokeWidth={2} />
-                    </button>
-                  )}
+              <RepeatableEntryCard
+                key={entry.id}
+                title={`Education ${i + 1}`}
+                onRemove={entries.length > 1 ? () => removeEntry(entry.id) : undefined}
+              >
+                <div className="input-group">
+                  <label className="input-label">Degree / Certificate</label>
+                  <input className="input-field" placeholder="e.g. B.Tech, 10th, Diploma" />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <div className="input-group">
-                    <label className="input-label">Degree / Certificate</label>
-                    <input className="input-field" placeholder="e.g. B.Tech, 10th, Diploma" />
+                <div className="input-group">
+                  <label className="input-label">Institution</label>
+                  <input className="input-field" placeholder="e.g. VIT Vellore" />
+                </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div className="input-group" style={{ flex: 1 }}>
+                    <label className="input-label">Year</label>
+                    <input className="input-field" type="number" placeholder="2022" />
                   </div>
-                  <div className="input-group">
-                    <label className="input-label">Institution</label>
-                    <input className="input-field" placeholder="e.g. VIT Vellore" />
-                  </div>
-                  <div style={{ display: 'flex', gap: 12 }}>
-                    <div className="input-group" style={{ flex: 1 }}>
-                      <label className="input-label">Year</label>
-                      <input className="input-field" type="number" placeholder="2022" />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 20 }}>
-                      <input type="checkbox" id={`ongoing-${i}`} />
-                      <label htmlFor={`ongoing-${i}`} className="text-body">Ongoing</label>
-                    </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 20 }}>
+                    <input type="checkbox" id={`ongoing-${entry.id}`} />
+                    <label htmlFor={`ongoing-${entry.id}`} className="text-body">Ongoing</label>
                   </div>
                 </div>
-              </div>
+              </RepeatableEntryCard>
             ))}
+            
             <button
               onClick={addEntry}
               className="btn btn-secondary btn-sm"
@@ -375,6 +345,9 @@ export function EducationScreen() {
           </>
         )}
       </div>
+      
+      <DishaFAB pageTitle="Education" fields={['Degree', 'Institution', 'Year']} onFill={() => {}} />
+
       <div className="sticky-bottom-bar">
         <Btn onClick={() => navigate('C5B_EXPERIENCE')}>Continue</Btn>
       </div>
@@ -388,15 +361,14 @@ export function EducationScreen() {
 export function ExperienceScreen() {
   const { navigate, back } = useRouter();
   const [firstJob, setFirstJob] = useState(false);
+  const [entries, setEntries] = useState([{ id: 'init', title: '', company: '', from: '', to: '' }]);
+
+  const addEntry = () => setEntries(e => [...e, { id: Date.now().toString() + Math.random(), title: '', company: '', from: '', to: '' }]);
+  const removeEntry = (id: string) => setEntries(e => e.filter(item => item.id !== id));
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Work Experience" />
       <Stepper current={2} total={6} label="Step 2 of 6 — Experience" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -411,9 +383,7 @@ export function ExperienceScreen() {
           label="This is my first job"
           description="Skip to skills"
           checked={firstJob}
-          onChange={v => {
-            setFirstJob(v);
-          }}
+          onChange={setFirstJob}
         />
 
         {firstJob && (
@@ -423,49 +393,74 @@ export function ExperienceScreen() {
         )}
 
         {!firstJob && (
-          <div className="card-border" style={{ marginTop: 20 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div className="input-group">
-                <label className="input-label">Job title</label>
-                <input className="input-field" placeholder="e.g. Software Developer" />
-              </div>
-              <div className="input-group">
-                <label className="input-label">Company</label>
-                <input className="input-field" placeholder="e.g. TCS" />
-              </div>
-              <div style={{ display: 'flex', gap: 12 }}>
-                <div className="input-group" style={{ flex: 1 }}>
-                  <label className="input-label">From</label>
-                  <input className="input-field" placeholder="Jan 2020" />
+          <>
+            {entries.map((entry, i) => (
+              <RepeatableEntryCard
+                key={entry.id}
+                title={`Experience ${i + 1}`}
+                onRemove={entries.length > 1 ? () => removeEntry(entry.id) : undefined}
+              >
+                <div className="input-group">
+                  <label className="input-label">Job title</label>
+                  <input className="input-field" placeholder="e.g. Software Developer" defaultValue={entry.title} />
                 </div>
-                <div className="input-group" style={{ flex: 1 }}>
-                  <label className="input-label">To</label>
-                  <input className="input-field" placeholder="Dec 2022" />
+                <div className="input-group">
+                  <label className="input-label">Company</label>
+                  <input className="input-field" placeholder="e.g. TCS" defaultValue={entry.company} />
                 </div>
-              </div>
-              <div className="input-group">
-                <label className="input-label">Brief description (optional)</label>
-                <textarea className="input-field" rows={3} placeholder="What did you work on?" style={{ resize: 'none' }} />
-              </div>
-              <div className="input-group" style={{ marginTop: 4 }}>
-                <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <FileCheck2 size={13} strokeWidth={2} color="var(--text-medium)" />
-                  Proof of employment (optional)
-                </label>
-                <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', border: '1.5px dashed var(--primary)', borderRadius: 8, background: 'var(--primary-light)', color: 'var(--primary)', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: '100%' }}>
-                  <Upload size={14} />
-                  Add offer letter / payslip / experience letter
-                </button>
-              </div>
-            </div>
-          </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div className="input-group" style={{ flex: 1 }}>
+                    <label className="input-label">From</label>
+                    <input className="input-field" placeholder="Jan 2020" defaultValue={entry.from} />
+                  </div>
+                  <div className="input-group" style={{ flex: 1 }}>
+                    <label className="input-label">To</label>
+                    <input className="input-field" placeholder="Dec 2022" defaultValue={entry.to} />
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label className="input-label">Brief description (optional)</label>
+                  <textarea className="input-field" rows={3} placeholder="What did you work on?" style={{ resize: 'none' }} />
+                </div>
+                <div className="input-group" style={{ marginTop: 4 }}>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <FileCheck2 size={13} strokeWidth={2} color="var(--text-medium)" />
+                    Proof of employment (optional)
+                  </label>
+                  <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', border: '1.5px dashed var(--primary)', borderRadius: 8, background: 'var(--primary-light)', color: 'var(--primary)', fontSize: 13, fontWeight: 600, cursor: 'pointer', width: '100%' }}>
+                    <Upload size={14} />
+                    Add offer letter / payslip
+                  </button>
+                </div>
+              </RepeatableEntryCard>
+            ))}
+            
+            <button
+              onClick={addEntry}
+              className="btn btn-secondary btn-sm"
+              style={{ marginTop: 12, width: 'auto', display: 'inline-flex', gap: 6 }}
+            >
+              <Plus size={16} strokeWidth={2} /> Add another
+            </button>
+          </>
         )}
       </div>
+
+      <DishaFAB 
+        pageTitle="Work experience" 
+        fields={['Job title', 'Company', 'From', 'To']} 
+        onFill={(data) => {
+          setEntries(e => [
+            { id: Date.now().toString(), title: data['Job title'] || '', company: data['Company'] || '', from: data['From'] || '', to: data['To'] || '' },
+            ...e.filter(item => item.id !== 'init')
+          ]);
+        }} 
+      />
+
       <div className="sticky-bottom-bar">
-            <div style={{ display: 'flex', gap: 12 }}>
-              <Btn variant="secondary" icon={<Plus size={16} />} style={{ flex: 1 }} onClick={() => {}}>Add another</Btn>
-              <Btn style={{ flex: 1 }} onClick={() => navigate('C5C_SKILLS')}>Continue</Btn>
-            </div>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <Btn style={{ flex: 1 }} onClick={() => navigate('C5C_SKILLS')}>Continue</Btn>
+        </div>
       </div>
     </div>
   );
@@ -491,12 +486,7 @@ export function SkillsScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={3} total={6} label="Step 3 of 6 — Skills" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -543,6 +533,7 @@ export function SkillsScreen() {
           ))}
         </div>
       </div>
+      <DishaFAB pageTitle="Skills" fields={['Field 1', 'Field 2']} onFill={() => {}} />
       <div className="sticky-bottom-bar">
         <Btn onClick={() => navigate('C5D_DISABILITY')}>Continue</Btn>
       </div>
@@ -567,21 +558,7 @@ export function DisabilityScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ flex: 1 }} />
-        <FillWithAIButton
-          pageTitle="Disability & Accommodations"
-          fields={['Assistive devices', 'Workplace accommodations']}
-          onFill={(vals) => {
-            if (vals['Assistive devices']) setDevices([vals['Assistive devices']]);
-            if (vals['Workplace accommodations']) setAccom([vals['Workplace accommodations']]);
-          }}
-        />
-        <div style={{ width: 8 }} />
-      </header>
+      <AppHeader />
       <Stepper current={4} total={7} label="Step 4 of 7 — Disability & Accommodations" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -636,6 +613,7 @@ export function DisabilityScreen() {
           ))}
         </div>
       </div>
+      <DishaFAB pageTitle="Disability" fields={['Field 1', 'Field 2']} onFill={() => {}} />
       <div className="sticky-bottom-bar">
         <Btn onClick={() => navigate('C5E_PREFERENCES')}>Continue</Btn>
       </div>
@@ -666,12 +644,7 @@ export function PreferencesScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={5} total={7} label="Step 5 of 7 — Work preferences" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -761,12 +734,7 @@ export function LanguagesScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={6} total={7} label="Step 6 of 7 — Languages" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -845,12 +813,7 @@ export function GuardianScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader />
       <Stepper current={7} total={7} label="Step 7 of 7 — Support Contact" />
 
       <div className="screen-content" style={{ paddingTop: 24 }}>
@@ -927,13 +890,7 @@ export function ProfileReviewScreen() {
 
   return (
     <div className="screen">
-      <header className="topbar">
-        <button className="topbar-back-btn" onClick={back} aria-label="Go back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h1 className="topbar-title text-h3 topbar-title-center">Review profile</h1>
-        <div style={{ width: 40 }} />
-      </header>
+      <AppHeader title="Review profile" centerTitle />
 
       <div className="screen-content" style={{ paddingTop: 16 }}>
         {/* Profile header preview */}

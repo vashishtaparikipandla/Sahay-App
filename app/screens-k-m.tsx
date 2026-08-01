@@ -6,7 +6,7 @@ import {
   Sparkles, MessageCircleQuestion, Receipt, MapPin, Search, Plus, Info
 } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { TopBar, Btn, InfoCard, SettingRow, AccordionItem, Badge, BottomNav } from './components';
+import { DishaFAB, AppHeader, TopBar, Btn, InfoCard, SettingRow, AccordionItem, Badge, BottomNav } from './components';
 
 // =============================================
 //  K1 — SAATHI ENTRY
