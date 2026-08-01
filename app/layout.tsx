@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { DeviceScaler } from "./DeviceScaler";
 
 export const metadata: Metadata = {
   title: "Sahay — Jobs & Care",
@@ -30,19 +31,21 @@ export default function RootLayout({
         />
       </head>
       <body style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh', background: '#333' }}>
-        <div className="device-frame">
-          <div className="device-notch"></div>
-          <div className="device-status-bar">
-            <span>9:41</span>
-            <div className="device-status-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0L12 21l-3.47-4.89z"></path></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line><rect x="4" y="9" width="16" height="6" fill="currentColor"></rect></svg>
+        <DeviceScaler>
+          <div className="device-frame">
+            <div className="device-notch"></div>
+            <div className="device-status-bar">
+              <span>9:41</span>
+              <div className="device-status-icons">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0L12 21l-3.47-4.89z"></path></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line><rect x="4" y="9" width="16" height="6" fill="currentColor"></rect></svg>
+              </div>
+            </div>
+            <div id="app-root">
+              {children}
             </div>
           </div>
-          <div id="app-root">
-            {children}
-          </div>
-        </div>
+        </DeviceScaler>
       </body>
     </html>
   );
