@@ -948,38 +948,39 @@ export function CelebrationScreen() {
   const { navigate } = useRouter();
 
   return (
-    <div className="screen" style={{ justifyContent: 'center', alignItems: 'center', padding: '0 var(--content-mx)', background: 'linear-gradient(160deg, var(--surface) 0%, var(--surface) 100%)' }}>
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, position: 'relative' }}>
-        {/* Floating confetti */}
-        {['🎉', '⭐', '🎊', '✨', '🌟', '💙'].map((e, i) => (
-          <span key={i} style={{
-            position: 'absolute',
-            fontSize: 24,
-            animation: `confetti-fall ${2 + i * 0.4}s ease-out ${i * 0.3}s both`,
-            left: `${[10, 25, 50, 70, 85, 40][i]}%`,
-            top: 0,
-            pointerEvents: 'none',
-          }}>{e}</span>
-        ))}
+    <div className="screen" style={{ background: 'linear-gradient(160deg, var(--surface) 0%, var(--surface) 100%)' }}>
+      <div className="screen-content" style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, position: 'relative' }}>
+          {/* Floating confetti */}
+          {['🎉', '⭐', '🎊', '✨', '🌟', '💙'].map((e, i) => (
+            <span key={i} style={{
+              position: 'absolute',
+              fontSize: 24,
+              animation: `confetti-fall ${2 + i * 0.4}s ease-out ${i * 0.3}s both`,
+              left: `${[10, 25, 50, 70, 85, 40][i]}%`,
+              top: 0,
+              pointerEvents: 'none',
+            }}>{e}</span>
+          ))}
 
-        <div style={{ width: 120, height: 120, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 6L9 17l-5-5"/>
-          </svg>
-        </div>
+          <div style={{ width: 120, height: 120, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </div>
 
-        <div>
-          <h1 className="text-h1" style={{ marginBottom: 12 }}>You're all set, Priya!</h1>
-          <p className="text-body text-medium" style={{ lineHeight: 1.6 }}>
-            Your verified profile is live. Employers can now discover and contact you. Let's find your next opportunity.
-          </p>
+          <div>
+            <h1 className="text-h1" style={{ marginBottom: 12 }}>You're all set, Priya!</h1>
+            <p className="text-body text-medium" style={{ lineHeight: 1.6 }}>
+              Your verified profile is live. Employers can now discover and contact you. Let's find your next opportunity.
+            </p>
+          </div>
         </div>
-
-        <div className="sticky-bottom-bar">
-          <Btn onClick={() => navigate('E1_JOBS')} icon={<ArrowRight size={18} strokeWidth={2} />}>
-            Explore jobs
-          </Btn>
-        </div>
+      </div>
+      <div className="sticky-bottom-bar" style={{ background: 'transparent', borderTop: 'none', padding: '0 24px 32px' }}>
+        <Btn onClick={() => navigate('E1_JOBS')} icon={<ArrowRight size={18} strokeWidth={2} />}>
+          Explore jobs
+        </Btn>
       </div>
     </div>
   );

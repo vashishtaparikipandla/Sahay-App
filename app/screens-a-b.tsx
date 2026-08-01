@@ -20,45 +20,44 @@ export function SplashScreen() {
       className="screen"
       style={{
         background: 'linear-gradient(160deg, #2563EB 0%, #1D4ED8 50%, #1E3A8A 100%)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 24,
       }}
     >
-      {/* Logo mark */}
-      <div
-        style={{
-          width: 88,
-          height: 88,
-          borderRadius: 24,
-          background: 'rgba(255,255,255,0.12)',
-          backdropFilter: 'blur(8px)',
-          border: '2px solid rgba(255,255,255,0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          animation: 'pulse 2s ease-in-out infinite',
-        }}
-        aria-hidden="true"
-      >
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <path d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8z" fill="rgba(255,255,255,0.15)" />
-          <path d="M18 24l4 4 8-8" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M24 14v4M24 30v4M14 24h4M30 24h4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
+      <div className="screen-content" style={{ alignItems: 'center', justifyContent: 'center', gap: 24 }}>
+        {/* Logo mark */}
+        <div
+          style={{
+            width: 88,
+            height: 88,
+            borderRadius: 24,
+            background: 'rgba(255,255,255,0.12)',
+            backdropFilter: 'blur(8px)',
+            border: '2px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            animation: 'pulse 2s ease-in-out infinite',
+          }}
+          aria-hidden="true"
+        >
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8z" fill="rgba(255,255,255,0.15)" />
+            <path d="M18 24l4 4 8-8" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M24 14v4M24 30v4M14 24h4M30 24h4" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{ fontSize: 40, fontWeight: 700, color: 'white', letterSpacing: '-0.5px', lineHeight: 1 }}>Sahay</h1>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'var(--body)', marginTop: 6 }}>सहाय</p>
+        </div>
+        <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--body-l)', textAlign: 'center', maxWidth: 240, marginBottom: 24 }}>
+          Your ability, your opportunity.
+        </p>
       </div>
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: 40, fontWeight: 700, color: 'white', letterSpacing: '-0.5px', lineHeight: 1 }}>Sahay</h1>
-        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'var(--body)', marginTop: 6 }}>सहाय</p>
-      </div>
-      <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--body-l)', textAlign: 'center', maxWidth: 240, marginBottom: 24 }}>
-        Your ability, your opportunity.
-      </p>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%', padding: '0 24px' }}>
+      <div className="sticky-bottom-bar" style={{ background: 'transparent', borderTop: 'none', padding: '0 24px 32px' }}>
         <button
           onClick={() => navigate('A2_LANGUAGE')}
-          style={{ background: 'white', color: '#1D4ED8', padding: '14px', borderRadius: '12px', fontWeight: 600, border: 'none', cursor: 'pointer' }}
+          style={{ width: '100%', background: 'white', color: '#1D4ED8', padding: '14px', borderRadius: '12px', fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
           Get Started
         </button>
