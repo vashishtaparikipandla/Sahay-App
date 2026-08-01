@@ -57,16 +57,10 @@ export function SplashScreen() {
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%', padding: '0 24px' }}>
         <button
-          onClick={() => { setState(s => ({ ...s, v2Enabled: false })); navigate('A2_LANGUAGE'); }}
-          style={{ background: 'white', color: '#1D4ED8', padding: '14px', borderRadius: '12px', fontWeight: 600 }}
+          onClick={() => navigate('A2_LANGUAGE')}
+          style={{ background: 'white', color: '#1D4ED8', padding: '14px', borderRadius: '12px', fontWeight: 600, border: 'none', cursor: 'pointer' }}
         >
-          Enter Sahay V1 (Standard)
-        </button>
-        <button
-          onClick={() => { setState(s => ({ ...s, v2Enabled: true })); navigate('A2_LANGUAGE'); }}
-          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.4)', color: 'white', padding: '14px', borderRadius: '12px', fontWeight: 600 }}
-        >
-          Enter Sahay V2 (Conversational)
+          Get Started
         </button>
       </div>
     </div>
