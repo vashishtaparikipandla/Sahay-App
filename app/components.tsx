@@ -973,25 +973,24 @@ export function DishaFAB({ pageTitle, fields, onFill }: FillWithAIProps) {
         aria-label="Fill with Disha"
         style={{
           position: 'absolute',
-          bottom: 'calc(var(--bottomnav-h) + 16px)',
+          top: '10px',
           right: '16px',
           zIndex: 150,
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
-          padding: '12px 20px',
-          borderRadius: 999,
-          border: 'none',
-          background: 'var(--primary)',
-          color: 'white',
-          fontSize: 14,
+          gap: 6,
+          padding: '6px 10px',
+          borderRadius: 8,
+          border: '1px solid var(--primary)',
+          background: 'var(--base)',
+          color: 'var(--primary)',
+          fontSize: 13,
           fontWeight: 600,
           cursor: 'pointer',
-          boxShadow: '0 4px 12px rgba(37, 99, 235, 0.4)',
         }}
       >
-        <Sparkles size={18} />
-        Fill with Disha
+        <Sparkles size={14} />
+        Auto-fill
       </button>
       {open && <FillWithAIOverlay pageTitle={pageTitle} fields={fields} onClose={() => setOpen(false)} onFill={handleFill} />}
     </>
