@@ -8,8 +8,8 @@ import {
   ShieldCheck, ArrowRight, Accessibility
 } from 'lucide-react';
 import { useRouter } from './context';
-import { AppHeader, BottomNav, Btn, Badge, EmptyState, StarRating,
-  SectionHeader, InfoCard, AccordionItem, Avatar } from './components';
+import {  AppHeader, BottomNav, Btn, Badge, EmptyState, StarRating,
+  SectionHeader, InfoCard, AccordionItem, Avatar , JargonText } from './components';
 import { PROVIDERS, SCHEMES, COMMUNITY_POSTS, MENTORS } from './data';
 
 // =============================================

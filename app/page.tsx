@@ -97,6 +97,8 @@ import {
 
 // --- N Screens (Disha AI) ---
 import { DishaScreen } from './screens-n';
+import { DisclosureAssistantScreen, RedFlagsScreen } from './screens-o';
+import { GlobalTTSReader } from './components';
 
 // =============================================
 //  MAIN SCREEN ROUTER
@@ -204,6 +206,10 @@ function AppRouter() {
 
     // N — Disha AI
     N1_DISHA:              <DishaScreen />,
+
+    // O — Trust & Accessibility
+    O2_DISCLOSURE_ASSISTANT: <DisclosureAssistantScreen />,
+    O3_RED_FLAGS:            <RedFlagsScreen />,
   };
 
   return (
@@ -221,6 +227,7 @@ export default function SahayApp() {
     <AppProvider>
       <RouterProvider>
         <AppRouter />
+        <GlobalTTSReader />
       </RouterProvider>
     </AppProvider>
   );

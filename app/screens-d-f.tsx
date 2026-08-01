@@ -1,15 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import {
+import { 
   Bell, Search, Calendar, Users, Landmark, ArrowRight,
   Briefcase, MapPin, IndianRupee, ShieldCheck, Building2,
   ArrowUpDown, Accessibility, X, Check, Star, AlertTriangle,
   CheckCircle2, ListChecks, Video, Phone, Trash2, ChevronRight, Clock
-} from 'lucide-react';
+, Flag, Lightbulb } from 'lucide-react';
 import { useRouter, useApp } from './context';
-import { AppHeader, BottomNav, TopBar, Btn, Badge, JobCard, EmptyState,
+import {  AppHeader, BottomNav, TopBar, Btn, Badge, JobCard, EmptyState,
   SkeletonCard, InfoCard, SectionHeader, BottomSheet,
-  SettingRow, Toast } from './components';
+  SettingRow, Toast , JargonText, ReportBottomSheet } from './components';
 import { JOBS, APPLICATIONS } from './data';
 
 // =============================================
@@ -401,13 +401,14 @@ function FiltersSheet({ open, onClose, onApply }: { open: boolean; onClose: () =
 // =============================================
 export function JobDetailScreen() {
   const { navigate, back } = useRouter();
+  const [showReport, setShowReport] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const job = JOBS[0];
 
   const tabs = ['About role', 'Requirements', 'Accessibility', 'About company', 'Interview'];
   const tabContent = [
-    <p key="about" className="text-body text-medium" style={{ lineHeight: 1.7 }}>{job.description}</p>,
+    <p key="about" className="text-body text-medium" style={{ lineHeight: 1.7 }}><JargonText text={job.description} /></p>,
     <ul key="req" style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
       {job.requirements.map((r, i) => <li key={i} className="text-body text-medium">{r}</li>)}
     </ul>,
@@ -439,7 +440,7 @@ export function JobDetailScreen() {
 
   return (
     <div className="screen">
-      <AppHeader title="Job details" />
+      <AppHeader title="Job details" showBack rightAction={<button onClick={() => setShowReport(true)} className="topbar-action" aria-label="Report employer"><Flag size={20} strokeWidth={2}/></button>} />
 
       <div className="screen-content" style={{ paddingTop: 16, paddingBottom: 100 }}>
         {/* Company header */}
@@ -494,6 +495,33 @@ export function JobDetailScreen() {
         <div style={{ minHeight: 120 }}>
           {tabContent[activeTab]}
         </div>
+
+        {/* O2 Disclosure Timing Card */}
+        <div 
+          onClick={() => navigate('O2_DISCLOSURE_ASSISTANT')}
+          style={{ 
+            marginTop: 32, 
+            padding: 16, 
+            background: 'var(--surface)', 
+            borderRadius: 12,
+            border: '1px solid var(--border)',
+            display: 'flex',
+            gap: 12,
+            alignItems: 'center',
+            cursor: 'pointer'
+          }}
+        >
+          <div style={{ width: 40, height: 40, borderRadius: 20, background: 'var(--base)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+            <Lightbulb size={20} strokeWidth={2} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, color: 'var(--text-high)' }}>Wondering when to share your disability?</div>
+            <div style={{ fontSize: 13, color: 'var(--text-medium)', marginTop: 4 }}>Compare timings and legal protections</div>
+          </div>
+        </div>
+
+        {showReport && <ReportBottomSheet onClose={() => setShowReport(false)} />}
+
       </div>
 
       {/* Sticky apply bar */}
@@ -692,6 +720,7 @@ export function ApplicationsScreen() {
 // =============================================
 export function AppDetailScreen() {
   const { navigate, back } = useRouter();
+  const [showReport, setShowReport] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const app = APPLICATIONS[0];
 

@@ -25,7 +25,8 @@ type Screen =
   | 'K1_SAATHI_ENTRY' | 'K2_CONSENT' | 'K3_TIER' | 'K4_PROFILE' | 'K7_REVIEW'
   | 'L1_MODES'
   | 'M2A_REVIEW' | 'M3A_PRACTICE_SETUP' | 'M3B_PRACTICE_SESSION' | 'M3C_PRACTICE_FEEDBACK' | 'M4A_TRAVEL_REQ'
-  | 'N1_DISHA';
+  | 'N1_DISHA'
+  | 'O2_DISCLOSURE_ASSISTANT' | 'O3_RED_FLAGS';
 
 interface RouterContextType {
   screen: Screen;

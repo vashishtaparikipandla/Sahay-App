@@ -443,7 +443,7 @@ export function PrivacyScreen() {
 //  I6 — HELP & SUPPORT
 // =============================================
 export function HelpScreen() {
-  const { back } = useRouter();
+  const { navigate, back } = useRouter();
 
   const faqs = [
     { q: 'How do I update my disability certificate?', a: 'Go to Profile → Disability & accommodations → Edit. Upload your new UDID or certificate. Our team reviews updates within 24 hours.' },
@@ -467,6 +467,22 @@ export function HelpScreen() {
         <h2 className="text-h3" style={{ marginBottom: 12 }}>Frequently asked</h2>
         <div style={{ marginBottom: 24 }}>
           {faqs.map((f, i) => <AccordionItem key={i} question={f.q} answer={f.a} />)}
+        </div>
+
+        <h2 className="text-h3" style={{ marginBottom: 12 }}>Safety & Trust</h2>
+        <div className="card-surface" style={{ marginBottom: 24 }}>
+          <SettingRow
+            icon={<ShieldCheck size={18} strokeWidth={2} color="var(--primary)" />}
+            label="Disclosure Assistant"
+            description="Guide on when to share your disability"
+            onClick={() => navigate('O2_DISCLOSURE_ASSISTANT')}
+          />
+          <SettingRow
+            icon={<AlertTriangle size={18} strokeWidth={2} color="var(--error)" />}
+            label="Scam Awareness"
+            description="Spot red flags and protect yourself"
+            onClick={() => navigate('O3_RED_FLAGS')}
+          />
         </div>
 
         <h2 className="text-h3" style={{ marginBottom: 16 }}>Contact us</h2>

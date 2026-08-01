@@ -84,6 +84,7 @@ type Message = {
 };
 
 const QUICK_CHIPS = [
+  'When should I disclose my disability?',
   'Find me a job',
   'How\'s my application doing?',
   'Help me prepare for an interview',
@@ -96,6 +97,15 @@ function getDishaResponse(userMsg: string): Message {
   const lower = userMsg.toLowerCase();
   const id = Math.random().toString(36).slice(2);
 
+  if (lower.includes('disclose') || lower.includes('disability')) {
+    return {
+      id,
+      role: 'disha',
+      text: 'That\'s a really common question, and there\'s no single right answer. I have a quick guide that compares the timings (before applying, at offer stage, or after joining) to help you decide what works best for you.',
+      chips: ['Show me the guide'],
+    };
+  }
+  
   if (lower.includes('job') && (lower.includes('find') || lower.includes('search'))) {
     return {
       id,

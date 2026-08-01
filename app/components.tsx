@@ -4,7 +4,8 @@ import { useRouter } from './context';
 import {
   Home, Briefcase, ListChecks, User,
   ChevronLeft, Bell, Search, MoreVertical,
-  Bot, Sparkles, Send, Mic, Paperclip, X, Trash2
+  Bot, Sparkles, Send, Mic, Paperclip, X, Trash2,
+  Volume2, Flag, Play, Pause, Square, AlertTriangle, Check
 } from 'lucide-react';
 
 // =============================================
@@ -995,3 +996,390 @@ export function DishaFAB({ pageTitle, fields, onFill }: FillWithAIProps) {
     </>
   );
 }
+
+// =============================================
+//  TRUST & ACCESSIBILITY (PATCH v2)
+// =============================================
+
+const JARGON_GLOSSARY: Record<string, string> = {
+  'CTC': 'Cost to Company: The total salary package including benefits and taxes.',
+  'Notice period': 'The time you must continue working after resigning before you can leave.',
+  'Onboarding': 'The process of welcoming and training a new employee.',
+  'KRA': 'Key Result Areas: The specific goals you are expected to achieve.',
+  'WFH': 'Work From Home: Doing your job from your house instead of the office.',
+  'ESOP': 'Employee Stock Ownership Plan: Company shares given to employees.',
+  'Probation': 'A trial period at the start of a job to check if you are a good fit.',
+  'PF': 'Provident Fund: A retirement savings account funded by you and your employer.',
+  'ESIC': 'Employee State Insurance Corporation: Health insurance for employees.',
+  'Variable pay': 'A bonus part of your salary based on performance.',
+  'Background verification': 'A check on your past employment, criminal record, and education.',
+};
+
+export function JargonText({ text, style }: { text: string; style?: React.CSSProperties }) {
+  const [activeTerm, setActiveTerm] = useState<string | null>(null);
+
+  // Sort terms by length descending for longest-match rule
+  const terms = Object.keys(JARGON_GLOSSARY).sort((a, b) => b.length - a.length);
+
+  // A very basic regex approach to find jargon without splitting words.
+  // In a robust implementation, this would parse text nodes properly.
+  let elements: React.ReactNode[] = [text];
+  
+  terms.forEach(term => {
+    const regex = new RegExp(`\\b(${term})\\b`, 'gi');
+    const newElements: React.ReactNode[] = [];
+    elements.forEach((el, idx) => {
+      if (typeof el === 'string') {
+        const parts = el.split(regex);
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i].toLowerCase() === term.toLowerCase()) {
+            newElements.push(
+              <span key={`${term}-${idx}-${i}`} style={{ position: 'relative', display: 'inline-block' }}>
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onFocus={() => {
+                    setActiveTerm(term);
+                    // Screen reader announce
+                    if ('speechSynthesis' in window) {
+                       const u = new SpeechSynthesisUtterance(`${term}. ${JARGON_GLOSSARY[term]}`);
+                       window.speechSynthesis.speak(u);
+                    }
+                  }}
+                  onClick={() => setActiveTerm(term)}
+                  style={{
+                    borderBottom: '2px dotted var(--primary)',
+                    cursor: 'pointer',
+                    color: 'var(--primary)',
+                    fontWeight: 600,
+                  }}
+                  aria-label={`${term}. ${JARGON_GLOSSARY[term]}`}
+                >
+                  {parts[i]}
+                </span>
+                {activeTerm === term && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      marginBottom: 8,
+                      background: 'var(--text-high)',
+                      color: 'white',
+                      padding: '12px',
+                      borderRadius: 12,
+                      width: 250,
+                      zIndex: 100,
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                      fontSize: 14,
+                      lineHeight: 1.4,
+                      textAlign: 'left'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
+                      <strong style={{ display: 'block', color: 'var(--primary-light)' }}>{term}</strong>
+                      <div style={{ display: 'flex', gap: 12 }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if ('speechSynthesis' in window) {
+                              window.speechSynthesis.speak(new SpeechSynthesisUtterance(JARGON_GLOSSARY[term]));
+                            }
+                          }}
+                          style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 0 }}
+                          aria-label="Read definition aloud"
+                        >
+                          <Volume2 size={16} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveTerm(null);
+                          }}
+                          style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 0 }}
+                          aria-label="Close"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                    {JARGON_GLOSSARY[term]}
+                    <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', border: '6px solid transparent', borderTopColor: 'var(--text-high)' }} />
+                  </div>
+                )}
+              </span>
+            );
+          } else if (parts[i]) {
+            newElements.push(parts[i]);
+          }
+        }
+      } else {
+        newElements.push(el);
+      }
+    });
+    elements = newElements;
+  });
+
+  return (
+    <div style={style} onClick={() => setActiveTerm(null)}>
+      {elements}
+    </div>
+  );
+}
+
+export function ReportBottomSheet({ onClose }: { onClose: () => void }) {
+  const [reason, setReason] = useState('');
+  const [blocked, setBlocked] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  if (submitted) {
+    return (
+      <BottomSheet open={true} onClose={onClose}>
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <h2 className="text-h3" style={{ marginBottom: 16 }}>Report Submitted</h2>
+          <div style={{ width: 48, height: 48, borderRadius: 24, background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+            <Check size={24} strokeWidth={3} />
+          </div>
+          <h3 className="text-h3" style={{ marginBottom: 8 }}>Thanks for reporting</h3>
+          <p className="text-body text-medium" style={{ marginBottom: 24 }}>
+            Our team reviews reports within 24–48 hours. This helps keep Sahay safe for everyone.
+          </p>
+          <Btn onClick={onClose}>Done</Btn>
+        </div>
+      </BottomSheet>
+    );
+  }
+
+  return (
+    <BottomSheet open={true} onClose={onClose}>
+      <h2 className="text-h3" style={{ marginBottom: 16 }}>Report this employer</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <p className="text-body text-medium">Why are you reporting them?</p>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {['Asked for payment', 'Asked for my Aadhaar/UDID again', 'Discriminatory language', 'Fake or misleading job', 'Other'].map(r => (
+            <button
+              key={r}
+              onClick={() => setReason(r)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '16px',
+                borderRadius: 12,
+                border: `2px solid ${reason === r ? 'var(--primary)' : 'var(--surface)'}`,
+                background: reason === r ? 'var(--primary-light)' : 'transparent',
+                textAlign: 'left',
+                fontSize: 16,
+                fontWeight: reason === r ? 600 : 500,
+              }}
+            >
+              <div style={{
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                border: `2px solid ${reason === r ? 'var(--primary)' : 'var(--text-disabled)'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                {reason === r && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--primary)' }} />}
+              </div>
+              {r}
+            </button>
+          ))}
+        </div>
+
+        {/* Block Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--surface)', borderRadius: 12, marginTop: 8 }}>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: 16 }}>Block employer</div>
+            <div style={{ fontSize: 14, color: 'var(--text-medium)', marginTop: 4 }}>Hide their jobs and messages from you</div>
+          </div>
+          <button
+            onClick={() => setBlocked(!blocked)}
+            style={{
+              width: 52,
+              height: 32,
+              borderRadius: 16,
+              background: blocked ? 'var(--error)' : 'var(--border)',
+              border: 'none',
+              position: 'relative',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            aria-checked={blocked}
+            role="switch"
+          >
+            <div style={{
+              width: 24,
+              height: 24,
+              borderRadius: '50%',
+              background: 'white',
+              position: 'absolute',
+              top: 4,
+              left: blocked ? 24 : 4,
+              transition: 'all 0.2s',
+            }} />
+          </button>
+        </div>
+
+        <Btn
+          disabled={!reason && !blocked}
+          onClick={() => {
+             if (reason) setSubmitted(true);
+             else onClose();
+          }}
+          style={{ marginTop: 8 }}
+        >
+          {reason ? 'Submit report' : blocked ? 'Block employer' : 'Submit'}
+        </Btn>
+      </div>
+    </BottomSheet>
+  );
+}
+
+export function GlobalTTSReader() {
+  const [active, setActive] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  // Very basic prototype TTS runner
+  const handleToggle = () => {
+    if (!active) {
+      setActive(true);
+      setPlaying(true);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // clear queue
+        const u = new SpeechSynthesisUtterance("Reading page content aloud. This is a prototype global read aloud feature.");
+        window.speechSynthesis.speak(u);
+      }
+    } else {
+      setActive(false);
+      setPlaying(false);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (playing) {
+      window.speechSynthesis.pause();
+    } else {
+      window.speechSynthesis.resume();
+    }
+    setPlaying(!playing);
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleToggle}
+        aria-label="Read page aloud"
+        style={{
+          position: 'fixed',
+          bottom: 120, // Above bottom nav and FABs
+          right: 20,
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          background: active ? 'var(--primary-dark)' : 'white',
+          color: active ? 'white' : 'var(--text-main)',
+          border: '1px solid var(--border)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 900,
+          transition: 'all 0.2s',
+        }}
+      >
+        <Volume2 size={24} strokeWidth={2} />
+      </button>
+
+      {active && (
+        <div style={{
+          position: 'fixed',
+          bottom: 80, // Above bottom nav
+          left: 20,
+          right: 90,
+          maxWidth: 300, // keep it inside mobile frame
+          background: 'var(--text-high)',
+          borderRadius: 16,
+          padding: '8px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 24,
+          zIndex: 900,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+        }}>
+           <button onClick={handlePlayPause} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 8 }}>
+             {playing ? <Pause size={24} /> : <Play size={24} />}
+           </button>
+           <button onClick={handleToggle} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 8 }}>
+             <Square size={20} />
+           </button>
+        </div>
+      )}
+    </>
+  );
+}
+
+export function ScamWarningInterstitial({ onReport, onDismiss }: { onReport: () => void; onDismiss: () => void }) {
+  return (
+    <div style={{
+      background: '#FEF2F2', // Red-50
+      border: '1px solid #F87171', // Red-400
+      borderRadius: 12,
+      padding: 16,
+      margin: '16px 0',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+    }}>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        <AlertTriangle size={24} color="#DC2626" style={{ flexShrink: 0 }} />
+        <div>
+          <h4 style={{ fontWeight: 700, color: '#991B1B', margin: '0 0 4px', fontSize: 16 }}>Stay Safe</h4>
+          <p style={{ color: '#7F1D1D', margin: 0, fontSize: 14, lineHeight: 1.4 }}>
+            This message is asking for payment. Sahay listings never require a fee or registration charge to apply.
+          </p>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
+        <button
+          onClick={onReport}
+          style={{
+            background: '#DC2626',
+            color: 'white',
+            border: 'none',
+            padding: '12px',
+            borderRadius: 8,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Report this
+        </button>
+        <button
+          onClick={onDismiss}
+          style={{
+            background: 'transparent',
+            color: '#991B1B',
+            border: 'none',
+            padding: '12px',
+            borderRadius: 8,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Continue anyway, I understand the risk
+        </button>
+      </div>
+    </div>
+  );
+}
+
