@@ -287,15 +287,17 @@ export function OnboardingScreen() {
             />
           ))}
         </div>
-        {current === 2 ? (
-          <Btn onClick={() => navigate('A4_SIGNIN')} icon={<ArrowRight size={18} strokeWidth={2} />}>
-            Get started
-          </Btn>
-        ) : (
-          <Btn onClick={() => goTo(current + 1)} icon={<ArrowRight size={18} strokeWidth={2} />}>
-            Next
-          </Btn>
-        )}
+        <div className="sticky-bottom-bar">
+          {current === 2 ? (
+            <Btn onClick={() => navigate('A4_SIGNIN')} icon={<ArrowRight size={18} strokeWidth={2} />}>
+              Get started
+            </Btn>
+          ) : (
+            <Btn onClick={() => goTo(current + 1)} icon={<ArrowRight size={18} strokeWidth={2} />}>
+              Next
+            </Btn>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -332,7 +334,7 @@ export function SignInScreen() {
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="sticky-bottom-bar" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Btn icon={<Phone size={18} strokeWidth={2} />} onClick={() => navigate('A5_MOBILE')}>
           Continue with mobile number
         </Btn>
@@ -1091,7 +1093,7 @@ export function SelfieScreen() {
         </div>
 
         {!taken && (
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div className="sticky-bottom-bar" style={{ display: 'flex', gap: 12 }}>
             <Btn onClick={() => setTaken(true)} icon={<Camera size={18} strokeWidth={2} />}>
               Take selfie
             </Btn>
@@ -1105,14 +1107,14 @@ export function SelfieScreen() {
         )}
 
         {taken && (
-          <>
+          <div className="sticky-bottom-bar">
             <Btn onClick={() => navigate('B7_VERIFY_STATUS')}>Continue</Btn>
             <div style={{ marginTop: 12 }}>
               <Btn variant="ghost" icon={<RefreshCw size={16} strokeWidth={2} />} onClick={() => setTaken(false)}>
                 Retake
               </Btn>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
@@ -1167,7 +1169,7 @@ export function VerifyStatusScreen() {
           </div>
           <h1 className="text-h1" style={{ color: 'var(--success)' }}>You're verified!</h1>
           <p className="text-body text-medium">Your identity and disability certificate have been confirmed. Employers will see your verified badge.</p>
-          <Btn onClick={handleVerified}>Build your profile →</Btn>
+          <div className="sticky-bottom-bar"><Btn onClick={handleVerified}>Build your profile →</Btn></div>
         </div>
       )}
 
@@ -1178,7 +1180,7 @@ export function VerifyStatusScreen() {
           </div>
           <h1 className="text-h1" style={{ color: 'var(--warning)' }}>We're reviewing your details</h1>
           <p className="text-body text-medium">This usually takes 48–72 hours. We'll notify you as soon as it's done.</p>
-          <Btn variant="secondary" onClick={() => navigate('D1_HOME')}>Explore jobs in the meantime</Btn>
+          <div className="sticky-bottom-bar"><Btn variant="secondary" onClick={() => navigate('D1_HOME')}>Explore jobs in the meantime</Btn></div>
         </div>
       )}
 
@@ -1191,7 +1193,7 @@ export function VerifyStatusScreen() {
           <div className="card-border" style={{ textAlign: 'left', borderColor: 'var(--error)' }}>
             <p className="text-body">The name on your Aadhaar (<strong>Priya Sharma</strong>) and UDID (<strong>P Sharma</strong>) don't quite match. This is common — please upload a document showing both names.</p>
           </div>
-          <Btn onClick={() => navigate('B5_UDID_UPLOAD')}>Fix this now</Btn>
+          <div className="sticky-bottom-bar"><Btn onClick={() => navigate('B5_UDID_UPLOAD')}>Fix this now</Btn></div>
         </div>
       )}
 
@@ -1202,7 +1204,9 @@ export function VerifyStatusScreen() {
           </div>
           <h1 className="text-h1">Provisional account active</h1>
           <p className="text-body text-medium">You can browse and apply to jobs. Employers will see a "Provisional" badge until your UDID is confirmed. Full verification unlocks when your UDID arrives.</p>
-          <Btn onClick={() => navigate('C1_PROFILE_CHOICE')}>Build your profile</Btn>
+          <div className="sticky-bottom-bar">
+            <Btn onClick={() => navigate('C1_PROFILE_CHOICE')}>Build your profile</Btn>
+          </div>
         </div>
       )}
     </div>

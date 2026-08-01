@@ -12,11 +12,12 @@ import {
 //  TOP APP BAR
 // =============================================
 interface TopBarProps {
-  title?: string;
+  title?: React.ReactNode;
   showBack?: boolean;
   centerTitle?: boolean;
   rightAction?: React.ReactNode;
   transparent?: boolean;
+  variant?: 'tabRoot' | 'detail';
 }
 
 // Sahay logo mark — small inline SVG
@@ -30,20 +31,20 @@ function SahayMark() {
   );
 }
 
-export function AppHeader({ title, showBack = true, centerTitle, rightAction, transparent }: TopBarProps) {
+export function AppHeader({ title, showBack = true, centerTitle, rightAction, transparent, variant = 'detail' }: TopBarProps) {
   const { back } = useRouter();
   return (
     <header
       className="topbar"
       style={transparent ? { background: 'transparent', borderBottom: 'none' } : undefined}
     >
-      <SahayMark />
-      {showBack ? (
+      {variant === 'tabRoot' && <SahayMark />}
+      {showBack && variant === 'detail' ? (
         <button className="topbar-back-btn" onClick={back} aria-label="Go back">
           <ChevronLeft size={24} strokeWidth={2} />
         </button>
       ) : (
-        <div style={{ width: 8 }} />
+        <div style={{ width: variant === 'tabRoot' ? 8 : 40 }} />
       )}
       {title && (
         <h1
@@ -788,7 +789,7 @@ function FillWithAIOverlay({ pageTitle, fields, onClose, onFill }: FillWithAIPro
   return (
     <div
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         bottom: 0,
         left: '50%',
@@ -971,7 +972,7 @@ export function DishaFAB({ pageTitle, fields, onFill }: FillWithAIProps) {
         onClick={() => setOpen(true)}
         aria-label="Fill with Disha"
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: 'calc(var(--bottomnav-h) + 16px)',
           right: '16px',
           zIndex: 150,
@@ -1278,7 +1279,7 @@ export function GlobalTTSReader() {
         onClick={handleToggle}
         aria-label="Read page aloud"
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: 120, // Above bottom nav and FABs
           right: 20,
           width: 56,
@@ -1301,7 +1302,7 @@ export function GlobalTTSReader() {
 
       {active && (
         <div style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: 80, // Above bottom nav
           left: 20,
           right: 90,

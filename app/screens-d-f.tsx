@@ -32,20 +32,26 @@ export function HomeScreen() {
   return (
     <div className="screen screen-with-nav">
       {/* Topbar */}
-      <header className="topbar" style={{ justifyContent: 'space-between' }}>
-        <div>
-          <p className="text-caption text-medium">{greeting}</p>
-          <h1 className="text-h3">{state.userName} 👋</h1>
-        </div>
-        <button
-          className="topbar-action"
-          onClick={() => navigate('H1_NOTIFICATIONS')}
-          aria-label="Notifications"
-        >
-          <Bell size={22} strokeWidth={2} />
-          {state.notifications > 0 && <span className="notification-dot" aria-label={`${state.notifications} unread`} />}
-        </button>
-      </header>
+      <AppHeader
+        variant="tabRoot"
+        showBack={false}
+        title={
+          <div>
+            <p className="text-caption text-medium">{greeting}</p>
+            <h1 className="text-h3">{state.userName} 👋</h1>
+          </div>
+        }
+        rightAction={
+          <button
+            className="topbar-action"
+            onClick={() => navigate('H1_NOTIFICATIONS')}
+            aria-label="Notifications"
+          >
+            <Bell size={22} strokeWidth={2} />
+            {state.notifications > 0 && <span className="notification-dot" aria-label={`${state.notifications} unread`} />}
+          </button>
+        }
+      />
 
       {/* Verification banner (if not verified) */}
       {state.verificationStatus !== 'verified' && (
@@ -662,7 +668,7 @@ export function ApplicationsScreen() {
 
   return (
     <div className="screen screen-with-nav">
-      <AppHeader title="My applications" centerTitle showBack={false} />
+      <AppHeader variant="tabRoot" title="My applications" centerTitle showBack={false} />
 
       <div style={{ padding: '8px 16px', background: 'var(--base)' }}>
         <div className="segment-group">

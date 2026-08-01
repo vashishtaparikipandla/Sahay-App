@@ -139,7 +139,7 @@ export function ProfileViewScreen() {
 
   return (
     <div className="screen screen-with-nav">
-      <AppHeader title="My profile" centerTitle showBack={false} />
+      <AppHeader variant="tabRoot" title="My profile" centerTitle showBack={false} />
 
       <div className="screen-content" style={{ paddingTop: 20, paddingBottom: 80 }}>
         {/* Profile header */}

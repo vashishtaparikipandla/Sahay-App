@@ -296,14 +296,21 @@ export function EducationScreen() {
                 { label: '10th (Secondary) Certificate', id: 'cert10' },
                 { label: '12th (Senior Secondary) Certificate', id: 'cert12' },
               ].map(cert => (
-                <div key={cert.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--border, #E2E8F0)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <FileCheck2 size={18} color="var(--primary)" />
-                    <span className="text-body" style={{ fontSize: 13 }}>{cert.label}</span>
+                <div key={cert.id} style={{ display: 'flex', flexDirection: 'column', padding: '12px 0', borderBottom: '1px solid var(--border, #E2E8F0)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <FileCheck2 size={18} color="var(--primary)" />
+                      <span className="text-body" style={{ fontSize: 13, fontWeight: 500 }}>{cert.label}</span>
+                    </div>
+                    <button style={{ fontSize: 12, color: 'white', fontWeight: 600, background: 'var(--primary)', border: 'none', padding: '6px 14px', borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Upload size={14} /> Upload
+                    </button>
                   </div>
-                  <button style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, background: 'none', border: '1px solid var(--primary)', padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}>
-                    Add later
-                  </button>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button style={{ fontSize: 12, color: 'var(--text-disabled)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+                      Skip for now
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -968,7 +975,7 @@ export function CelebrationScreen() {
           </p>
         </div>
 
-        <div style={{ width: '100%' }}>
+        <div className="sticky-bottom-bar">
           <Btn onClick={() => navigate('E1_JOBS')} icon={<ArrowRight size={18} strokeWidth={2} />}>
             Explore jobs
           </Btn>
